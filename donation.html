@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Donate | Derma360</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="auth-container">
+        <h1>Make a Donation</h1>
+
+        <div id="campaignInfo"></div>
+
+        <form id="donationForm">
+            <input type="text" id="donorName" placeholder="Donor Name" required>
+
+            <input type="number" id="amount" placeholder="Donation Amount (RM)" min="1" required>
+
+            <select id="paymentMethod" required>
+                <option value="">Select Payment Method</option>
+                <option value="Billplz Sandbox">Billplz Sandbox</option>
+                <option value="Manual Demo Payment">Manual Demo Payment</option>
+            </select>
+
+            <button type="submit">Proceed Payment</button>
+        </form>
+
+        <p id="message"></p>
+
+        <p><a href="campaign.html">Back to Campaigns</a></p>
+    </div>
+
+    <script type="module" src="js/donation.js"></script>
+</body>
+
+</html>
