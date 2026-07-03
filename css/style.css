@@ -380,6 +380,85 @@ footer p {
     }
 }
 
+.admin-container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.admin-hero {
+    background: white;
+    padding: 45px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.admin-stats,
+.admin-menu {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.stat-card,
+.admin-menu-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    border: 1px solid var(--border);
+}
+
+.stat-icon {
+    font-size: 34px;
+}
+
+.stat-card p {
+    text-align: left;
+    color: var(--muted);
+    margin-bottom: 5px;
+}
+
+.stat-card h2 {
+    font-size: 34px;
+    margin: 0;
+    color: var(--primary);
+}
+
+.admin-menu-card h3 {
+    margin-top: 0;
+}
+
+.admin-menu-card p {
+    text-align: left;
+    color: var(--text);
+}
+
+.admin-menu-card:hover {
+    transform: translateY(-5px);
+    transition: 0.2s ease;
+}
+
+@media (max-width: 900px) {
+
+    .admin-stats,
+    .admin-menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .admin-stats,
+    .admin-menu {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media print {
     body * {
         visibility: hidden;

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengesahan Kempen | Derma360</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <h2>Derma360 Admin</h2>
+        </div>
+        <nav>
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="list-user.html">Pengguna</a>
+            <a href="list-campaign.html">Kempen</a>
+            <a href="list-approval.html">Pengesahan</a>
+            <a href="list-report.html">Laporan</a>
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <h1>Senarai Kempen Untuk Disahkan</h1>
+        <p>Kempen di bawah memerlukan semakan dan pengesahan pentadbir.</p>
+
+        <div id="pendingCampaigns">
+            <p>Sedang memuatkan kempen...</p>
+        </div>
+    </main>
+
+    <script type="module" src="js/list-approval.js"></script>
+</body>
+
+</html>

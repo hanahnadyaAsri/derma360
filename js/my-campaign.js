@@ -76,8 +76,8 @@ async function loadMyCampaigns(uid) {
                 <p><strong>Catatan Pentadbir:</strong> ${campaign.verificationRemarks || "-"}</p>
 
                 <button onclick="window.location.href='edit-campaign.html?campaignId=${campaignId}'">
-                    Kemas Kini Kempen
-                </button>
+     Kemas Kini Kempen
+</button>
             `;
 
             myCampaignList.appendChild(card);

@@ -1,24 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard | Derma360</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papan Pemuka Pentadbir | Derma360</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="auth-container">
-        <h1>Admin Dashboard</h1>
-        <p>Verify campaign applications.</p>
+    <header class="navbar">
+        <div class="logo">
+            <h2>Derma360 Admin</h2>
+        </div>
 
-        <div id="pendingCampaigns"></div>
+        <nav>
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="list-user.html">Pengguna</a>
+            <a href="list-campaign.html">Kempen</a>
+            <a href="list-approval.html">Pengesahan</a>
+            <a href="list-report.html">Laporan</a>
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+        </nav>
+    </header>
 
-        <button id="logoutBtn">Logout</button>
-    </div>
+    <main class="admin-container">
+
+        <section class="admin-hero">
+            <h1>Papan Pemuka Pentadbir</h1>
+            <p>Urus pengguna, kempen, pengesahan dan laporan kewangan Derma360.</p>
+        </section>
+
+        <section class="admin-stats">
+
+            <div class="stat-card">
+                <span class="stat-icon">👥</span>
+                <p>Jumlah Pengguna</p>
+                <h2 id="totalUsers">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">📢</span>
+                <p>Jumlah Kempen</p>
+                <h2 id="totalCampaigns">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">⏳</span>
+                <p>Menunggu Pengesahan</p>
+                <h2 id="pendingCampaigns">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">💰</span>
+                <p>Jumlah Sumbangan</p>
+                <h2 id="totalDonation">RM 0</h2>
+            </div>
+
+        </section>
+
+        <section class="admin-menu">
+
+            <a href="list-user.html" class="admin-menu-card">
+                <h3> Pengurusan Pengguna</h3>
+                <p>Lihat maklumat pengguna berdaftar dan status akaun.</p>
+            </a>
+
+            <a href="list-campaign.html" class="admin-menu-card">
+                <h3> Pengurusan Kempen</h3>
+                <p>Semak semua kempen yang dihantar oleh pemohon.</p>
+            </a>
+
+            <a href="list-approval.html" class="admin-menu-card">
+                <h3> Pengesahan Kempen</h3>
+                <p>Luluskan atau tolak kempen yang menunggu semakan.</p>
+            </a>
+
+            <a href="list-report.html" class="admin-menu-card">
+                <h3> Laporan Kewangan</h3>
+                <p>Pantau jumlah sumbangan keseluruhan, mingguan dan bulanan.</p>
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Derma360 | Panel Pentadbir</p>
+    </footer>
 
     <script type="module" src="js/admin.js"></script>
+
 </body>
 
 </html>

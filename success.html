@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Berjaya | Derma360</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="auth-container">
+        <h1>Pembayaran Berjaya</h1>
+
+        <p>Sumbangan anda telah berjaya direkodkan.</p>
+
+        <button id="receiptBtn">Lihat Resit</button>
+
+        <p>
+            <a href="history.html">Lihat Sejarah Sumbangan</a>
+        </p>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const donationId = params.get("donationId");
+
+        document.getElementById("receiptBtn").addEventListener("click", () => {
+            window.location.href = `receipt.html?donationId=${donationId}`;
+        });
+    </script>
+
+</body>
+
+</html>

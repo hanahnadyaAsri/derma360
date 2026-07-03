@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Kewangan | Derma360</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <h2>Derma360 Admin</h2>
+        </div>
+        <nav>
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="list-user.html">Pengguna</a>
+            <a href="list-campaign.html">Kempen</a>
+            <a href="list-approval.html">Pengesahan</a>
+            <a href="list-report.html">Laporan</a>
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <h1>Laporan Kewangan</h1>
+        <p>Ringkasan sumbangan keseluruhan, mingguan, bulanan dan mengikut kempen.</p>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Jumlah Keseluruhan</h3>
+                <h2 id="totalDonation">RM 0</h2>
+            </div>
+
+            <div class="info-card">
+                <h3>Minggu Ini</h3>
+                <h2 id="weeklyDonation">RM 0</h2>
+            </div>
+
+            <div class="info-card">
+                <h3>Bulan Ini</h3>
+                <h2 id="monthlyDonation">RM 0</h2>
+            </div>
+        </div>
+
+        <h2>Laporan Mengikut Kempen</h2>
+
+        <div id="campaignReportList">
+            <p>Sedang memuatkan laporan...</p>
+        </div>
+    </main>
+
+    <script type="module" src="js/list-report.js"></script>
+</body>
+
+</html>

@@ -5,8 +5,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 import {
-    collection,
-    addDoc,
+    doc,
+    getDoc,
+    updateDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -16,37 +17,84 @@ import {
     getDownloadURL
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-storage.js";
 
-const campaignForm = document.getElementById("campaignForm");
+const editCampaignForm = document.getElementById("editCampaignForm");
 const message = document.getElementById("message");
 
 const campaignPoster = document.getElementById("campaignPoster");
 const posterPreview = document.getElementById("posterPreview");
 const supportingDocs = document.getElementById("supportingDocs");
 
-let currentUser = null;
+const params = new URLSearchParams(window.location.search);
+const campaignId = params.get("campaignId") || params.get("id");
 
-onAuthStateChanged(auth, (user) => {
+let currentUser = null;
+let existingCampaign = null;
+
+onAuthStateChanged(auth, async (user) => {
     if (!user) {
         window.location.href = "login.html";
         return;
     }
 
     currentUser = user;
+
+    if (!campaignId) {
+        showMessage("Kempen tidak dijumpai.", "red");
+        return;
+    }
+
+    await loadCampaign();
 });
+
+async function loadCampaign() {
+    try {
+        const campaignRef = doc(db, "campaigns", campaignId);
+        const campaignSnap = await getDoc(campaignRef);
+
+        if (!campaignSnap.exists()) {
+            showMessage("Kempen tidak dijumpai.", "red");
+            return;
+        }
+
+        existingCampaign = campaignSnap.data();
+
+        if (existingCampaign.applicantId !== currentUser.uid) {
+            alert("Anda tidak dibenarkan mengemas kini kempen ini.");
+            window.location.href = "my-campaign.html";
+            return;
+        }
+
+        document.getElementById("campaignTitle").value = existingCampaign.campaignTitle || "";
+        document.getElementById("campaignCategory").value = existingCampaign.campaignCategory || "";
+        document.getElementById("targetAmount").value = existingCampaign.targetAmount || "";
+        document.getElementById("endDate").value = existingCampaign.endDate || "";
+        document.getElementById("beneficiaryName").value = existingCampaign.beneficiaryName || "";
+        document.getElementById("location").value = existingCampaign.location || "";
+        document.getElementById("description").value = existingCampaign.description || "";
+
+        if (existingCampaign.mediaUrl) {
+            posterPreview.src = existingCampaign.mediaUrl;
+        }
+
+    } catch (error) {
+        console.error(error);
+        showMessage(error.message, "red");
+    }
+}
 
 campaignPoster.addEventListener("change", () => {
     const file = campaignPoster.files[0];
 
-    if (!file) return;
-
-    posterPreview.src = URL.createObjectURL(file);
+    if (file) {
+        posterPreview.src = URL.createObjectURL(file);
+    }
 });
 
-campaignForm.addEventListener("submit", async (e) => {
+editCampaignForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    if (!currentUser) {
-        showMessage("Sila log masuk terlebih dahulu.", "red");
+    if (!currentUser || !existingCampaign) {
+        showMessage("Sila log masuk semula.", "red");
         return;
     }
 
@@ -57,12 +105,6 @@ campaignForm.addEventListener("submit", async (e) => {
     const beneficiaryName = document.getElementById("beneficiaryName").value.trim();
     const location = document.getElementById("location").value.trim();
     const description = document.getElementById("description").value.trim();
-    const posterFile = campaignPoster.files[0];
-
-    if (!posterFile) {
-        showMessage("Sila muat naik poster kempen.", "red");
-        return;
-    }
 
     if (targetAmount <= 0) {
         showMessage("Sasaran dana mestilah melebihi RM0.", "red");
@@ -70,17 +112,24 @@ campaignForm.addEventListener("submit", async (e) => {
     }
 
     try {
-        showMessage("Sedang menghantar kempen. Sila tunggu...", "blue");
+        showMessage("Sedang menyimpan kemas kini...", "blue");
 
-        const resizedPoster = await resizeImage(posterFile, 800, 450, 0.85);
+        let mediaUrl = existingCampaign.mediaUrl || "";
 
-        const mediaUrl = await uploadFile(
-            resizedPoster,
-            "campaign-media",
-            "poster.jpg"
-        );
+        const selectedPoster = campaignPoster.files[0];
 
-        const supportingDocumentUrls = [];
+        if (selectedPoster) {
+            const resizedPoster = await resizeImage(selectedPoster, 800, 450, 0.85);
+
+            mediaUrl = await uploadFile(
+                resizedPoster,
+                "campaign-media",
+                "poster.jpg"
+            );
+        }
+
+        const existingDocs = existingCampaign.supportingDocumentUrls || [];
+        const newDocUrls = [];
 
         for (const file of supportingDocs.files) {
             const url = await uploadFile(
@@ -89,39 +138,29 @@ campaignForm.addEventListener("submit", async (e) => {
                 file.name
             );
 
-            supportingDocumentUrls.push(url);
+            newDocUrls.push(url);
         }
 
-        await addDoc(collection(db, "campaigns"), {
-            applicantId: currentUser.uid,
-
+        await updateDoc(doc(db, "campaigns", campaignId), {
             campaignTitle,
             campaignCategory,
             targetAmount,
-            currentAmount: 0,
-
             beneficiaryName,
             location,
             description,
-
-            startDate: serverTimestamp(),
             endDate,
 
-            status_kempen: "Perlu Disahkan",
-
             mediaUrl,
-            supportingDocumentUrls,
-            proofOfDistributionUrl: "",
-            verificationRemarks: "",
+            supportingDocumentUrls: [...existingDocs, ...newDocUrls],
 
-            createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
         });
 
-        showMessage("Kempen berjaya dihantar. Menunggu pengesahan pentadbir.", "green");
+        showMessage("Kempen berjaya dikemas kini.", "green");
 
-        campaignForm.reset();
-        posterPreview.src = "https://placehold.co/800x450?text=Poster+Kempen";
+        setTimeout(() => {
+            window.location.href = "my-campaigns.html";
+        }, 1200);
 
     } catch (error) {
         console.error(error);

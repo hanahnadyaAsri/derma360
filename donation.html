@@ -1,39 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
-    <title>Donate | Derma360</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumbangan | Derma360</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="auth-container">
-        <h1>Make a Donation</h1>
+    <header class="navbar">
+        <div class="logo">
+            <h2>Derma360</h2>
+        </div>
 
-        <div id="campaignInfo"></div>
+        <nav>
+            <a href="donor-dashboard.html">Papan Pemuka</a>
+            <a href="campaign.html">Kempen</a>
+            <a href="history.html">Sejarah</a>
+            <a href="profile.html">Profil Saya</a>
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+
+        <h1>Buat Sumbangan</h1>
+
+        <div id="campaignInfo">
+            <p>Sedang memuatkan maklumat kempen...</p>
+        </div>
 
         <form id="donationForm">
-            <input type="text" id="donorName" placeholder="Donor Name" required>
 
-            <input type="number" id="amount" placeholder="Donation Amount (RM)" min="1" required>
+            <label for="donorName">Nama Penyumbang *</label>
+            <input type="text" id="donorName" required>
 
+            <label for="amount">Jumlah Sumbangan (RM) *</label>
+            <input type="number" id="amount" min="1" required>
+
+            <label for="paymentMethod">Kaedah Pembayaran *</label>
             <select id="paymentMethod" required>
-                <option value="">Select Payment Method</option>
-                <option value="Billplz Sandbox">Billplz Sandbox</option>
-                <option value="Manual Demo Payment">Manual Demo Payment</option>
+                <option value="">Pilih Kaedah Pembayaran</option>
+                <option value="Demo Payment">Demo Payment</option>
             </select>
 
-            <button type="submit">Proceed Payment</button>
+            <button type="submit">Teruskan Pembayaran</button>
+
         </form>
 
         <p id="message"></p>
 
-        <p><a href="campaign.html">Back to Campaigns</a></p>
-    </div>
+        <p><a href="campaign.html">Kembali ke Senarai Kempen</a></p>
 
+    </main>
+
+    <script type="module" src="js/app.js"></script>
     <script type="module" src="js/donation.js"></script>
+
 </body>
 
 </html>

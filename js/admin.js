@@ -7,113 +7,82 @@ import {
 
 import {
     collection,
-    query,
-    where,
     getDocs,
-    doc,
-    getDoc,
-    updateDoc,
-    serverTimestamp
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
+const totalUsers = document.getElementById("totalUsers");
+const totalCampaigns = document.getElementById("totalCampaigns");
 const pendingCampaigns = document.getElementById("pendingCampaigns");
+const totalDonation = document.getElementById("totalDonation");
+
 const logoutBtn = document.getElementById("logoutBtn");
 
 onAuthStateChanged(auth, async (user) => {
+
     if (!user) {
+
         window.location.href = "login.html";
         return;
+
     }
 
-    const userDoc = await getDoc(doc(db, "users", user.uid));
+    await loadDashboard();
 
-    if (!userDoc.exists() || userDoc.data().role !== "Admin") {
-        alert("Access denied. Admin only.");
-        window.location.href = "login.html";
-        return;
-    }
-
-    loadPendingCampaigns();
 });
 
-async function loadPendingCampaigns() {
-    pendingCampaigns.innerHTML = "<p>Loading pending campaigns...</p>";
+async function loadDashboard() {
 
-    const q = query(
+    // Users
+
+    const usersSnapshot = await getDocs(collection(db, "users"));
+
+    totalUsers.textContent = usersSnapshot.size;
+
+    // Campaigns
+
+    const campaignsSnapshot = await getDocs(collection(db, "campaigns"));
+
+    totalCampaigns.textContent = campaignsSnapshot.size;
+
+    // Pending Campaigns
+
+    const pendingQuery = query(
         collection(db, "campaigns"),
         where("status_kempen", "==", "Perlu Disahkan")
     );
 
-    const querySnapshot = await getDocs(q);
+    const pendingSnapshot = await getDocs(pendingQuery);
 
-    pendingCampaigns.innerHTML = "";
+    pendingCampaigns.textContent = pendingSnapshot.size;
 
-    if (querySnapshot.empty) {
-        pendingCampaigns.innerHTML = "<p>No pending campaigns.</p>";
-        return;
-    }
+    // Donations
 
-    querySnapshot.forEach((docSnap) => {
-        const campaign = docSnap.data();
-        const campaignId = docSnap.id;
+    const donationSnapshot = await getDocs(collection(db, "donations"));
 
-        const card = document.createElement("div");
-        card.className = "campaign-card";
+    let total = 0;
 
-        card.innerHTML = `
-            <img src="${campaign.mediaUrl}" alt="Campaign Media" class="campaign-img">
+    donationSnapshot.forEach((doc) => {
 
-            <h3>${campaign.campaignTitle}</h3>
-            <p><strong>Category:</strong> ${campaign.campaignCategory}</p>
-            <p><strong>Target:</strong> RM ${campaign.targetAmount}</p>
-            <p><strong>Beneficiary:</strong> ${campaign.beneficiaryName}</p>
-            <p><strong>Location:</strong> ${campaign.location}</p>
-            <p>${campaign.description}</p>
+        total += Number(doc.data().amount || 0);
 
-            <button class="approveBtn" data-id="${campaignId}">Approve</button>
-            <button class="rejectBtn" data-id="${campaignId}">Reject</button>
-        `;
-
-        pendingCampaigns.appendChild(card);
     });
 
-    document.querySelectorAll(".approveBtn").forEach((button) => {
-        button.addEventListener("click", () => approveCampaign(button.dataset.id));
-    });
+    totalDonation.textContent =
 
-    document.querySelectorAll(".rejectBtn").forEach((button) => {
-        button.addEventListener("click", () => rejectCampaign(button.dataset.id));
-    });
-}
+        "RM " + total.toLocaleString("en-MY", {
 
-async function approveCampaign(campaignId) {
-    await updateDoc(doc(db, "campaigns", campaignId), {
-        campaignStatus: "Active",
-        status_kempen: "Aktif",
-        startDate: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        verificationRemarks: "Campaign approved by admin."
-    });
+            minimumFractionDigits: 2
 
-    alert("Campaign approved.");
-    loadPendingCampaigns();
-}
+        });
 
-async function rejectCampaign(campaignId) {
-    const reason = prompt("Reason for rejection:");
-
-    await updateDoc(doc(db, "campaigns", campaignId), {
-        campaignStatus: "Rejected",
-        status_kempen: "Ditolak",
-        updatedAt: serverTimestamp(),
-        verificationRemarks: reason || "Campaign rejected by admin."
-    });
-
-    alert("Campaign rejected.");
-    loadPendingCampaigns();
 }
 
 logoutBtn.addEventListener("click", async () => {
+
     await signOut(auth);
-    window.location.href = "login.html";
+
+    window.location.href = "index.html";
+
 });

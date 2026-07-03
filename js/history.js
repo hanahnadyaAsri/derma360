@@ -8,81 +8,60 @@ import {
     collection,
     query,
     where,
-    getDocs,
-    doc,
-    getDoc
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-const tbody = document.querySelector("#historyTable tbody");
-const message = document.getElementById("message");
+const historyList = document.getElementById("historyList");
 
 onAuthStateChanged(auth, async (user) => {
-
     if (!user) {
         window.location.href = "login.html";
         return;
     }
 
-    loadHistory(user.uid);
-
+    await loadHistory(user.uid);
 });
 
 async function loadHistory(uid) {
-
-    tbody.innerHTML = "";
+    historyList.innerHTML = "<p>Sedang memuatkan sejarah sumbangan...</p>";
 
     const q = query(
-        collection(db, "donations"),
+        collection(db, "receipts"),
         where("donorId", "==", uid)
     );
 
     const snapshot = await getDocs(q);
 
+    historyList.innerHTML = "";
+
     if (snapshot.empty) {
-
-        message.textContent = "No donation history.";
-
+        historyList.innerHTML = "<p>Tiada sejarah sumbangan buat masa ini.</p>";
         return;
     }
 
-    snapshot.forEach(async (documentData) => {
+    snapshot.forEach((docSnap) => {
+        const receipt = docSnap.data();
+        const receiptId = docSnap.id;
 
-        const donation = documentData.data();
+        const date = receipt.generatedAt?.toDate().toLocaleString("ms-MY") || "-";
 
-        let campaignTitle = "Unknown";
+        const card = document.createElement("div");
+        card.className = "campaign-card";
 
-        const campaignDoc = await getDoc(doc(db, "campaigns", donation.campaignId));
+        card.innerHTML = `
+            <h3>${receipt.receiptNumber || "Resit Sumbangan"}</h3>
 
-        if (campaignDoc.exists()) {
+            <p><strong>Jumlah:</strong> RM ${Number(receipt.amount || 0).toFixed(2)}</p>
+            <p><strong>Kaedah Bayaran:</strong> ${receipt.paymentMethod || "-"}</p>
+            <p><strong>Status:</strong> ${receipt.paymentStatus || "-"}</p>
+            <p><strong>No. Transaksi:</strong> ${receipt.transactionReference || "-"}</p>
+            <p><strong>Tarikh:</strong> ${date}</p>
 
-            campaignTitle = campaignDoc.data().campaignTitle;
-
-        }
-
-        tbody.innerHTML += `
-        <tr>
-
-        <td>${campaignTitle}</td>
-
-        <td>RM ${donation.amount}</td>
-
-        <td>${donation.paymentMethod}</td>
-
-        <td>${donation.paymentStatus}</td>
-
-        <td>${donation.createdAt?.toDate().toLocaleDateString() ?? "-"}</td>
-
-        <td>
-
-        <a href="receipt.html?donationId=${documentData.id}">
-        View
-        </a>
-
-        </td>
-
-        </tr>
+            <button onclick="window.location.href='receipt.html?receiptId=${receiptId}'">
+                Lihat Resit
+            </button>
         `;
 
+        historyList.appendChild(card);
     });
-
 }

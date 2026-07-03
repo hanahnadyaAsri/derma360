@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cipta Kempen | Derma360</title>
+    <title>Kemas Kini Kempen | Derma360</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -16,26 +16,24 @@
         </div>
 
         <nav>
-            <a href="index.html">Laman Utama</a>
             <a href="applicant-dashboard.html">Papan Pemuka</a>
-            <a href="my-campaign.html">Kempen Saya</a>
+            <a href="my-campaigns.html">Kempen Saya</a>
             <a href="profile.html">Profil Saya</a>
             <button id="logoutBtn" class="nav-logout">Log Keluar</button>
         </nav>
     </header>
 
     <main class="auth-container">
-        <h1>Cipta Kempen Bantuan</h1>
-        <p>Lengkapkan maklumat kempen dan hantar untuk semakan pentadbir.</p>
+        <h1>Kemas Kini Kempen</h1>
+        <p>Kemas kini maklumat kempen anda jika diperlukan.</p>
 
-        <form id="campaignForm">
+        <form id="editCampaignForm">
 
             <label for="campaignTitle">Tajuk Kempen *</label>
             <input type="text" id="campaignTitle" maxlength="100" required>
 
             <label for="campaignCategory">Kategori Kempen *</label>
             <select id="campaignCategory" required>
-                <option value="">Pilih Kategori</option>
                 <option value="Medical">Perubatan</option>
                 <option value="Food">Makanan</option>
                 <option value="Equipment">Peralatan</option>
@@ -51,34 +49,34 @@
             <input type="text" id="beneficiaryName" required>
 
             <label for="location">Lokasi *</label>
-            <input type="text" id="location" placeholder="Contoh: Kajang, Selangor" required>
+            <input type="text" id="location" required>
 
             <label for="description">Penerangan Kempen *</label>
             <textarea id="description" required></textarea>
 
-            <label for="campaignPoster">Poster Kempen *</label>
-            <input type="file" id="campaignPoster" accept="image/*" required>
-
+            <label>Poster Semasa</label>
             <div class="poster-preview">
-                <img id="posterPreview" src="https://placehold.co/800x450?text=Poster+Kempen"
-                    alt="Pratonton Poster Kempen">
+                <img id="posterPreview" src="https://placehold.co/800x450?text=Poster+Kempen" alt="Poster Kempen">
             </div>
 
-            <label for="supportingDocs">Dokumen Sokongan / Imej</label>
+            <label for="campaignPoster">Tukar Poster Kempen</label>
+            <input type="file" id="campaignPoster" accept="image/*">
+
+            <label for="supportingDocs">Tambah Dokumen Sokongan / Imej</label>
             <input type="file" id="supportingDocs" accept=".pdf,image/*" multiple>
 
-            <button type="submit">Hantar Kempen</button>
+            <button type="submit">Simpan Kemas Kini</button>
         </form>
 
         <p id="message"></p>
 
         <p>
-            <a href="applicant-dashboard.html">Kembali ke Papan Pemuka Pemohon</a>
+            <a href="my-campaign.html">Kembali ke Kempen Saya</a>
         </p>
     </main>
 
     <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/campaign.js"></script>
+    <script type="module" src="js/edit-campaign.js"></script>
 
 </body>
 

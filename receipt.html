@@ -1,31 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donation Receipt | Derma360</title>
+    <title>Resit Sumbangan | Derma360</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
-    <div class="auth-container">
-
-        <div id="receiptBox">
-            <p>Loading receipt...</p>
+    <header class="navbar">
+        <div class="logo">
+            <h2>Derma360</h2>
         </div>
 
-        <button id="printBtn">Download / Print Receipt</button>
+        <nav>
+            <a href="donor-dashboard.html">Papan Pemuka</a>
+            <a href="history.html">Sejarah</a>
+            <a href="profile.html">Profil Saya</a>
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <h1>Resit Sumbangan</h1>
+
+        <div id="receiptBox">
+            <p>Sedang memuatkan resit...</p>
+        </div>
+
+        <button id="printBtn">Cetak Resit</button>
 
         <p>
-            <a href="history.html">Back to Donation History</a>
+            <a href="history.html">Kembali ke Sejarah Sumbangan</a>
         </p>
+    </main>
 
-    </div>
-
+    <script type="module" src="js/app.js"></script>
     <script type="module" src="js/receipt.js"></script>
-
 </body>
 
 </html>

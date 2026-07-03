@@ -32,69 +32,92 @@ onAuthStateChanged(auth, async (user) => {
 
     currentUser = user;
 
-    if (!campaignId) {
-        message.textContent = "Campaign not found.";
-        message.style.color = "red";
-        return;
-    }
-
+    await loadUser();
     await loadCampaign();
 });
 
+async function loadUser() {
+    const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+
+    if (userSnap.exists()) {
+        document.getElementById("donorName").value = userSnap.data().name || "";
+    }
+}
+
 async function loadCampaign() {
+    if (!campaignId) {
+        campaignInfo.innerHTML = "<p>Kempen tidak dijumpai.</p>";
+        return;
+    }
+
     const campaignSnap = await getDoc(doc(db, "campaigns", campaignId));
 
     if (!campaignSnap.exists()) {
-        campaignInfo.innerHTML = "<p>Campaign not found.</p>";
+        campaignInfo.innerHTML = "<p>Kempen tidak dijumpai.</p>";
         return;
     }
 
     campaignData = campaignSnap.data();
 
     campaignInfo.innerHTML = `
-        <img src="${campaignData.mediaUrl}" class="campaign-img" alt="Campaign Poster">
-        <h3>${campaignData.campaignTitle}</h3>
-        <p><strong>Category:</strong> ${campaignData.campaignCategory}</p>
-        <p><strong>Target:</strong> RM ${campaignData.targetAmount}</p>
-        <p><strong>Raised:</strong> RM ${campaignData.currentAmount}</p>
+        <img src="${campaignData.mediaUrl}" class="campaign-img" alt="Poster Kempen">
+
+        <h2>${campaignData.campaignTitle}</h2>
+
+        <p>${campaignData.description}</p>
+
+        <p><strong>Penerima:</strong> ${campaignData.beneficiaryName}</p>
+
+        <p><strong>Lokasi:</strong> ${campaignData.location}</p>
+
+        <p><strong>Dana Terkumpul:</strong> RM ${campaignData.currentAmount || 0}</p>
+
+        <p><strong>Sasaran Dana:</strong> RM ${campaignData.targetAmount}</p>
     `;
 }
 
 function generateReceiptNumber() {
-    const date = new Date();
-    const dateText = date.toISOString().slice(0, 10).replaceAll("-", "");
-    const randomNo = Math.floor(100000 + Math.random() * 900000);
+    const today = new Date();
+    const dateText = today.toISOString().slice(0, 10).replaceAll("-", "");
+    const randomNumber = Math.floor(100000 + Math.random() * 900000);
 
-    return `DERMA-${dateText}-${randomNo}`;
+    return `DERMA-${dateText}-${randomNumber}`;
 }
 
 donationForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (!currentUser || !campaignData) {
+        message.textContent = "Maklumat sumbangan tidak lengkap.";
+        message.style.color = "red";
+        return;
+    }
 
     const donorName = document.getElementById("donorName").value.trim();
     const amount = Number(document.getElementById("amount").value);
     const paymentMethod = document.getElementById("paymentMethod").value;
 
     if (amount <= 0) {
-        message.textContent = "Please enter a valid amount.";
+        message.textContent = "Jumlah sumbangan tidak sah.";
         message.style.color = "red";
         return;
     }
 
     try {
-        message.textContent = "Processing donation...";
+        message.textContent = "Sedang memproses sumbangan...";
         message.style.color = "blue";
 
         const transactionReference = "DEMO-" + Date.now();
 
         const donationRef = await addDoc(collection(db, "donations"), {
-            campaignId: campaignId,
             donorId: currentUser.uid,
-            donorName: donorName,
-            amount: amount,
-            paymentMethod: paymentMethod,
-            paymentStatus: "Paid",
-            transactionReference: transactionReference,
+            donorName,
+            campaignId,
+            campaignTitle: campaignData.campaignTitle,
+            amount,
+            paymentMethod,
+            paymentStatus: "Paid Demo",
+            transactionReference,
             createdAt: serverTimestamp()
         });
 
@@ -106,25 +129,21 @@ donationForm.addEventListener("submit", async (e) => {
 
         const receiptRef = await addDoc(collection(db, "receipts"), {
             donationId: donationRef.id,
-            campaignId: campaignId,
+            campaignId,
             donorId: currentUser.uid,
             receiptNumber: generateReceiptNumber(),
-            amount: amount,
-            paymentMethod: paymentMethod,
-            paymentStatus: "Paid",
-            transactionReference: transactionReference,
+            amount,
+            paymentMethod,
+            paymentStatus: "Paid Demo",
+            transactionReference,
             receiptUrl: "",
             generatedAt: serverTimestamp()
         });
 
-        message.textContent = "Donation successful. Redirecting to receipt...";
-        message.style.color = "green";
-
-        setTimeout(() => {
-            window.location.href = `receipt.html?receiptId=${receiptRef.id}`;
-        }, 1000);
+        window.location.href = `success.html?receiptId=${receiptRef.id}`;
 
     } catch (error) {
+        console.error(error);
         message.textContent = error.message;
         message.style.color = "red";
     }
