@@ -1,129 +1,383 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f8f7;
-    margin: 0;
-    padding: 0;
+:root {
+    --primary: #00796b;
+    --primary-dark: #005f56;
+    --accent: #f57c00;
+    --accent-dark: #c85f00;
+    --bg: #f4f8f7;
+    --card: #ffffff;
+    --text: #1f2933;
+    --muted: #5f6b73;
+    --border: #cfd8dc;
+    --shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    --radius: 18px;
 }
 
-.auth-container {
-    width: 380px;
-    margin: 60px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--primary);
+    line-height: 1.3;
 }
 
 h1 {
-    color: #008080;
     text-align: center;
+    font-size: 40px;
 }
 
 p {
-    text-align: center;
+    font-size: 18px;
+}
+
+a {
+    color: var(--accent-dark);
+    font-weight: 700;
+}
+
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 4px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.auth-container,
+.info-section,
+.campaign-preview,
+.about-section {
+    width: 92%;
+    max-width: 1000px;
+    margin: 40px auto;
+    background: var(--card);
+    padding: 42px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
 input,
 select,
+textarea,
 button {
     width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    box-sizing: border-box;
+    padding: 16px;
+    margin: 10px 0;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+input,
+select,
+textarea {
+    border: 2px solid var(--border);
+    background: #fff;
+    color: var(--text);
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
 }
 
 button {
-    background: #008080;
-    color: white;
+    background: var(--primary);
+    color: #fff;
     border: none;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 700;
+    min-height: 56px;
 }
 
 button:hover {
-    background: #006666;
-}
-.password-group {
-    position: relative;
-    width: 100%;
-    margin: 8px 0;
+    background: var(--primary-dark);
 }
 
-.password-group input {
-    width: 100%;
-    padding: 12px;
-    padding-right: 45px;
-    box-sizing: border-box;
+.secondary-btn,
+.nav-btn,
+.nav-logout {
+    background: var(--accent);
 }
 
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background: transparent;
-    cursor: pointer;
+.secondary-btn:hover,
+.nav-btn:hover,
+.nav-logout:hover {
+    background: var(--accent-dark);
+}
+
+.navbar {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 50px;
+}
+
+.navbar h2 {
+    color: white;
+    margin: 0;
+    font-size: 30px;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
     font-size: 18px;
-    padding: 0;
+}
+
+.nav-btn,
+.nav-logout {
     width: auto;
-}
-#previewContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    color: white !important;
 }
 
-.preview-image {
-    width: 120px;
-    height: 120px;
+.hero-section {
+    width: 92%;
+    max-width: 1100px;
+    margin: 45px auto;
+    background: white;
+    border-radius: 28px;
+    padding: 80px 45px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.hero-section h1 {
+    font-size: 64px;
+    margin-bottom: 10px;
+}
+
+.hero-section h2 {
+    font-size: 30px;
+    color: var(--text);
+}
+
+.hero-section p {
+    max-width: 780px;
+    margin: 20px auto;
+}
+
+.hero-buttons,
+.dashboard-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.hero-buttons a,
+.dashboard-actions a {
+    text-decoration: none;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.info-card,
+.campaign-card {
+    background: #ffffff;
+    padding: 26px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.info-card h3 {
+    margin-top: 0;
+}
+
+.campaign-img {
+    width: 100%;
+    max-height: 380px;
     object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.poster-preview img,
-.preview-image {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin: 8px;
-}
-
-#previewContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    border-radius: 14px;
 }
 
 .progress-bar {
     width: 100%;
-    height: 14px;
-    background: #e0e0e0;
-    border-radius: 20px;
+    height: 20px;
+    background: #d9e2e1;
+    border-radius: 999px;
     overflow: hidden;
-    margin: 10px 0;
+    margin: 12px 0;
 }
 
 .progress-fill {
     height: 100%;
-    background: #008080;
+    background: var(--primary);
+}
+
+.password-group {
+    position: relative;
+}
+
+.password-group input {
+    padding-right: 58px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    min-height: auto;
+    padding: 4px;
+    background: transparent;
+    color: #111;
+    font-size: 22px;
+}
+
+.poster-preview img {
+    width: 100%;
+    max-width: 650px;
+    height: 330px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2px dashed var(--border);
+    margin: 12px auto;
+    display: block;
+}
+
+#previewContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 15px;
+}
+
+.preview-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+}
+
+.profile-image-container {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.profile-image-container img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid var(--primary);
 }
 
 .receipt-card {
     background: white;
-    border: 1px solid #ddd;
-    padding: 25px;
-    border-radius: 12px;
+    border: 2px solid var(--border);
+    padding: 32px;
+    border-radius: 16px;
     text-align: left;
 }
 
-.receipt-card h2 {
-    color: #008080;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+th,
+td {
+    padding: 14px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+th {
+    background: var(--primary);
+    color: white;
+}
+
+footer {
+    background: var(--primary);
+    color: white;
     text-align: center;
+    padding: 24px;
+    margin-top: 50px;
+}
+
+footer p {
+    color: white;
+    margin: 0;
+}
+
+@media (max-width: 760px) {
+    body {
+        font-size: 17px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 16px;
+        padding: 18px;
+    }
+
+    .navbar nav {
+        justify-content: center;
+    }
+
+    .auth-container,
+    .info-section,
+    .campaign-preview,
+    .about-section {
+        width: 94%;
+        padding: 24px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .hero-section {
+        padding: 45px 24px;
+    }
+
+    .hero-section h1 {
+        font-size: 44px;
+    }
+
+    .hero-section h2 {
+        font-size: 24px;
+    }
+
+    .hero-buttons,
+    .dashboard-actions,
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media print {
@@ -147,9 +401,4 @@ button:hover {
     a {
         display: none;
     }
-}
-
-video
-a {
-    color: #ff8c00;
 }

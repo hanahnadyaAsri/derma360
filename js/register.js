@@ -12,9 +12,6 @@ import {
 
 const registerForm = document.getElementById("registerForm");
 const message = document.getElementById("message");
-const ocrBtn = document.getElementById("ocrBtn");
-const ocrStatus = document.getElementById("ocrStatus");
-const documentUpload = document.getElementById("documentUpload");
 
 // Show / Hide Password
 document.querySelectorAll(".toggle-password").forEach((button) => {
@@ -31,60 +28,6 @@ document.querySelectorAll(".toggle-password").forEach((button) => {
     });
 });
 
-// OCR Function
-ocrBtn.addEventListener("click", async () => {
-    const file = documentUpload.files[0];
-
-    if (!file) {
-        ocrStatus.textContent = "Please upload a document first.";
-        ocrStatus.style.color = "red";
-        return;
-    }
-
-    ocrStatus.textContent = "Scanning document... Please wait.";
-    ocrStatus.style.color = "blue";
-
-    try {
-        const result = await Tesseract.recognize(file, "eng");
-        const text = result.data.text;
-
-        console.log(text);
-
-        // Extract IC number - 12 digits
-        const icMatch = text.match(/\b\d{12}\b/);
-        if (icMatch) {
-            document.getElementById("ic_number").value = icMatch[0];
-        }
-
-        // Basic name guess: first long uppercase line
-        const lines = text
-            .split("\n")
-            .map(line => line.trim())
-            .filter(line => line.length > 3);
-
-        const nameLine = lines.find(line =>
-            /^[A-Z\s]+$/.test(line) &&
-            line.length > 5 &&
-            !line.includes("MALAYSIA") &&
-            !line.includes("IDENTITY")
-        );
-
-        if (nameLine) {
-            document.getElementById("name").value = nameLine;
-        }
-
-        document.getElementById("address").value = text;
-
-        ocrStatus.textContent = "OCR completed. Please verify the extracted information.";
-        ocrStatus.style.color = "green";
-
-    } catch (error) {
-        ocrStatus.textContent = "OCR failed. Please try another image.";
-        ocrStatus.style.color = "red";
-        console.error(error);
-    }
-});
-
 // Register User
 registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -93,10 +36,8 @@ registerForm.addEventListener("submit", async (e) => {
     const ic_number = document.getElementById("ic_number").value.trim();
     const address = document.getElementById("address").value.trim();
     const email = document.getElementById("email").value.trim();
-
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-
     const phone = document.getElementById("phone").value.trim();
     const pwd_card_number = document.getElementById("pwd_card_number").value.trim();
     const disability_category = document.getElementById("disability_category").value.trim();
@@ -135,8 +76,11 @@ registerForm.addEventListener("submit", async (e) => {
             uid: user.uid,
             name,
             email,
+
             role: "User",
-            selectedRole: false,
+            canApply: true,
+            canDonate: true,
+
             ic_number,
             address,
             phone,

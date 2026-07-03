@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile | Derma360</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="auth-container">
+        <h1>My Profile</h1>
+        <p>View and update your personal information.</p>
+
+        <div class="profile-image-container">
+            <img id="profilePreview" src="https://placehold.co/180x180?text=Profile" alt="Profile Picture">
+
+            <input type="file" id="profileImage" accept="image/*">
+        </div>
+
+        <form id="profileForm">
+            <input type="text" id="name" placeholder="Full Name" required>
+
+            <input type="email" id="email" placeholder="Email Address" disabled>
+
+            <input type="text" id="phone" placeholder="Phone Number" required>
+
+            <input type="text" id="ic_number" placeholder="IC Number" required>
+
+            <textarea id="address" placeholder="Address"></textarea>
+
+            <input type="text" id="pwd_card_number" placeholder="PWD Card Number (Optional)">
+
+            <input type="text" id="disability_category" placeholder="Disability Category (Optional)">
+
+            <button type="submit">Update Profile</button>
+        </form>
+
+        <p id="message"></p>
+
+        <p><a href="choose-mode.html">Back to Dashboard</a></p>
+    </div>
+
+    <script type="module" src="js/profile.js"></script>
+</body>
+
+</html>

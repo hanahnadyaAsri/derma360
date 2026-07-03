@@ -12,30 +12,80 @@ import {
 
 const logoutBtn = document.getElementById("logoutBtn");
 const userName = document.getElementById("userName");
-const userRole = document.getElementById("userRole");
 
 onAuthStateChanged(auth, async (user) => {
+
+    // User not logged in
     if (!user) {
         window.location.href = "login.html";
         return;
     }
 
-    const userDoc = await getDoc(doc(db, "users", user.uid));
+    try {
 
-    if (!userDoc.exists()) {
-        window.location.href = "login.html";
-        return;
-    }
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
 
-    const userData = userDoc.data();
+        if (!userSnap.exists()) {
+            await signOut(auth);
+            window.location.href = "login.html";
+            return;
+        }
 
-    if (userName) userName.textContent = userData.name;
-    if (userRole) userRole.textContent = userData.role;
-});
+        const userData = userSnap.data();
 
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", async () => {
+        // Account disabled
+        if (userData.accountStatus !== "Active") {
+            alert("Your account has been disabled. Please contact the administrator.");
+            await signOut(auth);
+            window.location.href = "login.html";
+            return;
+        }
+
+        // Display user's name
+        if (userName) {
+            userName.textContent = userData.name;
+        }
+
+        // Future use
+        // Profile image
+        /*
+        const profileImage = document.getElementById("profileImage");
+
+        if(profileImage && userData.profileImage){
+            profileImage.src = userData.profileImage;
+        }
+        */
+
+    } catch (error) {
+        console.error(error);
+        alert("Unable to load your account information.");
+
         await signOut(auth);
         window.location.href = "login.html";
+    }
+
+});
+
+// Logout
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", async () => {
+
+        try {
+
+            await signOut(auth);
+
+            sessionStorage.clear();
+            localStorage.clear();
+
+            window.location.href = "index.html";
+
+        } catch (error) {
+            console.error(error);
+            alert("Unable to logout.");
+        }
+
     });
+
 }

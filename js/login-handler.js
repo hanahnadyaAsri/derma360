@@ -53,14 +53,11 @@ loginForm.addEventListener("submit", async (e) => {
             message.style.color = "red";
             return;
         }
-        if (userData.role === "User" || userData.selectedRole === false) {
-            window.location.href = "choose-role.html";
-        } else if (userData.role === "Applicant") {
-            window.location.href = "applicant-dashboard.html";
-        } else if (userData.role === "Donor") {
-            window.location.href = "donor-dashboard.html";
-        } else if (userData.role === "Admin") {
+
+        if (userData.role === "Admin") {
             window.location.href = "admin-dashboard.html";
+        } else {
+            window.location.href = "choose-mode.html";
         }
 
     } catch (error) {

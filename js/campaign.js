@@ -1,6 +1,8 @@
 import { auth, db, storage } from "./firebase-config.js";
 
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 import {
     collection,
@@ -19,6 +21,7 @@ const message = document.getElementById("message");
 
 const campaignPoster = document.getElementById("campaignPoster");
 const posterPreview = document.getElementById("posterPreview");
+const supportingDocs = document.getElementById("supportingDocs");
 
 let currentUser = null;
 
@@ -27,6 +30,7 @@ onAuthStateChanged(auth, (user) => {
         window.location.href = "login.html";
         return;
     }
+
     currentUser = user;
 });
 
@@ -35,33 +39,16 @@ campaignPoster.addEventListener("change", () => {
 
     if (!file) return;
 
-    if (file.type.startsWith("image/")) {
-        posterPreview.src = URL.createObjectURL(file);
-        posterPreview.style.display = "block";
-    } else {
-        posterPreview.src = "https://placehold.co/500x280?text=Video+Uploaded";
-    }
+    posterPreview.src = URL.createObjectURL(file);
 });
-
-async function uploadFile(file, folderName) {
-    const filePath = `${folderName}/${Date.now()}_${file.name}`;
-    const fileRef = ref(storage, filePath);
-
-    await uploadBytes(fileRef, file);
-    return await getDownloadURL(fileRef);
-}
 
 campaignForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     if (!currentUser) {
-        message.textContent = "Please login first.";
-        message.style.color = "red";
+        showMessage("Sila log masuk terlebih dahulu.", "red");
         return;
     }
-
-    message.textContent = "Submitting campaign... Please wait.";
-    message.style.color = "blue";
 
     const campaignTitle = document.getElementById("campaignTitle").value.trim();
     const campaignCategory = document.getElementById("campaignCategory").value;
@@ -70,23 +57,38 @@ campaignForm.addEventListener("submit", async (e) => {
     const beneficiaryName = document.getElementById("beneficiaryName").value.trim();
     const location = document.getElementById("location").value.trim();
     const description = document.getElementById("description").value.trim();
+    const posterFile = campaignPoster.files[0];
+
+    if (!posterFile) {
+        showMessage("Sila muat naik poster kempen.", "red");
+        return;
+    }
+
+    if (targetAmount <= 0) {
+        showMessage("Sasaran dana mestilah melebihi RM0.", "red");
+        return;
+    }
 
     try {
-        const mediaFile = campaignPoster.files[0];
+        showMessage("Sedang menghantar kempen. Sila tunggu...", "blue");
 
-        if (!mediaFile) {
-            message.textContent = "Please upload campaign media.";
-            message.style.color = "red";
-            return;
-        }
+        const resizedPoster = await resizeImage(posterFile, 800, 450, 0.85);
 
-        const mediaUrl = await uploadFile(mediaFile, "campaign-media");
+        const mediaUrl = await uploadFile(
+            resizedPoster,
+            "campaign-media",
+            "poster.jpg"
+        );
 
-        const supportingDocs = document.getElementById("supportingDocs");
         const supportingDocumentUrls = [];
 
         for (const file of supportingDocs.files) {
-            const url = await uploadFile(file, "campaign-supporting-documents");
+            const url = await uploadFile(
+                file,
+                "campaign-supporting-documents",
+                file.name
+            );
+
             supportingDocumentUrls.push(url);
         }
 
@@ -117,14 +119,77 @@ campaignForm.addEventListener("submit", async (e) => {
             updatedAt: serverTimestamp()
         });
 
-        message.textContent = "Campaign submitted successfully. Waiting for admin verification.";
-        message.style.color = "green";
+        showMessage("Kempen berjaya dihantar. Menunggu pengesahan pentadbir.", "green");
 
         campaignForm.reset();
-        posterPreview.src = "https://placehold.co/500x280?text=Campaign+Media";
+        posterPreview.src = "https://placehold.co/800x450?text=Poster+Kempen";
 
     } catch (error) {
-        message.textContent = error.message;
-        message.style.color = "red";
+        console.error(error);
+        showMessage(error.message, "red");
     }
 });
+
+function showMessage(text, color) {
+    message.textContent = text;
+    message.style.color = color;
+}
+
+async function uploadFile(file, folder, filename) {
+    const safeName = filename.replace(/\s+/g, "_");
+    const filePath = `${folder}/${Date.now()}_${safeName}`;
+    const fileRef = ref(storage, filePath);
+
+    await uploadBytes(fileRef, file);
+
+    return await getDownloadURL(fileRef);
+}
+
+async function resizeImage(file, maxWidth = 800, maxHeight = 450, quality = 0.85) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            img.src = e.target.result;
+        };
+
+        reader.onerror = reject;
+
+        img.onload = () => {
+            let width = img.width;
+            let height = img.height;
+
+            const ratio = Math.min(maxWidth / width, maxHeight / height);
+
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+
+            const canvas = document.createElement("canvas");
+            canvas.width = maxWidth;
+            canvas.height = maxHeight;
+
+            const ctx = canvas.getContext("2d");
+
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, maxWidth, maxHeight);
+
+            const x = (maxWidth - width) / 2;
+            const y = (maxHeight - height) / 2;
+
+            ctx.drawImage(img, x, y, width, height);
+
+            canvas.toBlob(
+                (blob) => {
+                    resolve(blob);
+                },
+                "image/jpeg",
+                quality
+            );
+        };
+
+        img.onerror = reject;
+
+        reader.readAsDataURL(file);
+    });
+}

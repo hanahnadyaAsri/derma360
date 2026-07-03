@@ -1,60 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Campaign | Derma360</title>
+    <title>Cipta Kempen | Derma360</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="auth-container">
-        <h1>Create Donation Campaign</h1>
-        <p>Submit your campaign for admin verification.</p>
+    <header class="navbar">
+        <div class="logo">
+            <h2>Derma360</h2>
+        </div>
+
+        <nav>
+            <a href="index.html">Laman Utama</a>
+            <a href="applicant-dashboard.html">Papan Pemuka</a>
+            <a href="my-campaigns.html">Kempen Saya</a>
+            <a href="profile.html">Profil Saya</a>
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <h1>Cipta Kempen Bantuan</h1>
+        <p>Lengkapkan maklumat kempen dan hantar untuk semakan pentadbir.</p>
 
         <form id="campaignForm">
 
-            <input type="text" id="campaignTitle" placeholder="Campaign Title" maxlength="100" required>
+            <label for="campaignTitle">Tajuk Kempen *</label>
+            <input type="text" id="campaignTitle" maxlength="100" required>
 
+            <label for="campaignCategory">Kategori Kempen *</label>
             <select id="campaignCategory" required>
-                <option value="">Select Category</option>
-                <option value="Medical">Medical</option>
-                <option value="Food">Food</option>
-                <option value="Equipment">Equipment</option>
+                <option value="">Pilih Kategori</option>
+                <option value="Medical">Perubatan</option>
+                <option value="Food">Makanan</option>
+                <option value="Equipment">Peralatan</option>
             </select>
 
-            <input type="number" id="targetAmount" placeholder="Target Amount (RM)" min="1" required>
+            <label for="targetAmount">Sasaran Dana (RM) *</label>
+            <input type="number" id="targetAmount" min="1" required>
 
-            <label for="endDate">Campaign End Date *</label>
+            <label for="endDate">Tarikh Tamat Kempen *</label>
             <input type="date" id="endDate" required>
 
-            <input type="text" id="beneficiaryName" placeholder="Beneficiary Name" required>
+            <label for="beneficiaryName">Nama Penerima Bantuan *</label>
+            <input type="text" id="beneficiaryName" required>
 
-            <input type="text" id="location" placeholder="Location (City / State)" required>
+            <label for="location">Lokasi *</label>
+            <input type="text" id="location" placeholder="Contoh: Kajang, Selangor" required>
 
-            <textarea id="description" placeholder="Campaign Description" required></textarea>
+            <label for="description">Penerangan Kempen *</label>
+            <textarea id="description" required></textarea>
 
-            <label for="campaignPoster">Campaign Poster / Media *</label>
-            <input type="file" id="campaignPoster" accept="image/*,video/*" required>
+            <label for="campaignPoster">Poster Kempen *</label>
+            <input type="file" id="campaignPoster" accept="image/*" required>
 
             <div class="poster-preview">
-                <img id="posterPreview" src="https://placehold.co/500x280?text=Campaign+Media"
-                    alt="Campaign Poster Preview">
+                <img id="posterPreview" src="https://placehold.co/800x450?text=Poster+Kempen"
+                    alt="Pratonton Poster Kempen">
             </div>
 
-            <label for="supportingDocs">Supporting Documents / Images</label>
+            <label for="supportingDocs">Dokumen Sokongan / Imej</label>
             <input type="file" id="supportingDocs" accept=".pdf,image/*" multiple>
 
-            <button type="submit">Submit Campaign</button>
+            <button type="submit">Hantar Kempen</button>
         </form>
 
         <p id="message"></p>
-        <p><a href="applicant-dashboard.html">Back to Dashboard</a></p>
-    </div>
 
+        <p>
+            <a href="applicant-dashboard.html">Kembali ke Papan Pemuka Pemohon</a>
+        </p>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
     <script type="module" src="js/campaign.js"></script>
+
 </body>
 
 </html>
