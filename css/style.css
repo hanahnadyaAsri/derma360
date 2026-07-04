@@ -433,47 +433,102 @@ footer p {
    Accessibility Button and Panel
 ========================================================== */
 
+/* Floating Accessibility Button */
 #a11y-toggle {
     position: fixed;
-    right: 22px;
-    bottom: 22px;
-    width: 58px;
-    height: 58px;
-    min-height: 58px;
-    padding: 0;
-    margin: 0;
+    right: 24px;
+    bottom: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    width: auto;
+    min-width: 64px;
+    height: 64px;
+    min-height: 64px;
+
+    padding: 0 20px;
+
     border: none;
-    border-radius: 50%;
+    border-radius: 999px;
+
     background: var(--primary);
-    color: #ffffff;
-    font-size: 1.6rem;
+    color: #fff;
+
+    font-size: 15px;
+    font-weight: 600;
+
     cursor: pointer;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+
     z-index: 99999;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+
+    transition: .25s ease;
 }
+
+/* Accessibility icon */
+#a11y-toggle::before {
+    content: "♿";
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* If you only want icon, hide the text */
+/* Uncomment below */
+/*
+#a11y-toggle{
+    width:64px;
+    padding:0;
+    font-size:0;
+}
+*/
 
 #a11y-toggle:hover {
     background: var(--primary-dark);
-    transform: scale(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .25);
 }
+
+#a11y-toggle:active {
+    transform: scale(.95);
+}
+
+#a11y-toggle:focus-visible {
+    outline: 4px solid var(--focus);
+    outline-offset: 4px;
+}
+
+/* ================= Panel ================= */
 
 .a11y-panel {
     position: fixed;
-    right: 22px;
-    bottom: 92px;
+
+    right: 24px;
+    bottom: 100px;
+
     width: 340px;
     max-width: calc(100vw - 32px);
-    background: #ffffff;
+
+    background: #fff;
     color: var(--text);
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+
     border: 1px solid var(--border);
+    border-radius: 18px;
+
+    padding: 22px;
+
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .18);
+
     z-index: 99999;
+
     opacity: 0;
     visibility: hidden;
-    transform: translateY(12px);
-    transition: 0.25s ease;
+    transform: translateY(10px);
+
+    transition: .25s ease;
 }
 
 .a11y-panel.open {
@@ -486,31 +541,42 @@ footer p {
     margin: 0 0 18px;
     color: var(--primary);
     font-size: 1.15rem;
+    font-weight: 700;
 }
 
 .size-buttons {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
-    margin: 12px 0 18px;
+    margin: 14px 0 20px;
 }
 
 .size-buttons button {
     width: 100%;
     min-height: 42px;
-    padding: 8px;
     margin: 0;
+
+    padding: 8px;
+
+    background: #fff;
+
+    color: var(--text);
+
     border: 1px solid var(--border);
     border-radius: 8px;
-    background: #f7f7f7;
-    color: var(--text);
-    font-size: 0.85rem;
+
+    font-size: .85rem;
+
+    transition: .2s;
 }
 
-.size-buttons button:hover,
+.size-buttons button:hover {
+    background: #eef8f6;
+}
+
 .size-buttons button.active {
     background: var(--primary);
-    color: #ffffff;
+    color: #fff;
     border-color: var(--primary);
 }
 
@@ -518,7 +584,9 @@ footer p {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     gap: 14px;
+
     margin: 18px 0;
 }
 
@@ -526,32 +594,48 @@ footer p {
     flex: 1;
 }
 
+/* Switch */
+
 .switch {
     position: relative;
-    display: inline-block;
-    width: 54px;
-    min-width: 54px;
+
+    width: 56px;
     height: 30px;
-    min-height: 30px;
+
+    min-width: 56px;
+
     padding: 0;
     margin: 0;
+
     border: none;
     border-radius: 999px;
+
     background: #cbd5e1;
+
     cursor: pointer;
+
+    transition: .25s;
 }
 
 .switch::before {
+
     content: "";
+
     position: absolute;
-    width: 24px;
-    height: 24px;
+
     left: 3px;
     top: 3px;
+
+    width: 24px;
+    height: 24px;
+
+    background: #fff;
+
     border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-    transition: 0.25s ease;
+
+    transition: .25s;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
 }
 
 .switch.on {
@@ -559,20 +643,26 @@ footer p {
 }
 
 .switch.on::before {
-    transform: translateX(24px);
+    transform: translateX(26px);
 }
 
 #a11y-reset {
+
     width: 100%;
-    min-height: 46px;
+
     margin-top: 14px;
-    padding: 12px;
-    border-radius: 10px;
+
     background: var(--accent);
-    color: #ffffff;
+
+    color: #fff;
+
+    border-radius: 10px;
+
+    transition: .25s;
 }
 
 #a11y-reset:hover {
+
     background: var(--accent-dark);
 }
 
