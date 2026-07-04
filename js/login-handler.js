@@ -12,9 +12,18 @@ import {
 const loginForm = document.getElementById("loginForm");
 const message = document.getElementById("message");
 
+function setMessage(text, color = "") {
+    if (!message) return;
+
+    message.textContent = text;
+    message.style.color = color;
+}
+
 document.querySelectorAll(".toggle-password").forEach((button) => {
     button.addEventListener("click", () => {
         const input = document.getElementById(button.dataset.target);
+
+        if (!input) return;
 
         if (input.type === "password") {
             input.type = "text";
@@ -26,13 +35,24 @@ document.querySelectorAll(".toggle-password").forEach((button) => {
     });
 });
 
-loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+if (!loginForm) {
+    console.warn("Login form not found on this page.");
+} else {
+    loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
+        const emailField = document.getElementById("email");
+        const passwordField = document.getElementById("password");
 
-    message.textContent = "";
+        if (!emailField || !passwordField) {
+            setMessage("Form fields are missing.", "red");
+            return;
+        }
+
+        const email = emailField.value.trim();
+        const password = passwordField.value;
+
+        setMessage("");
 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -41,16 +61,14 @@ loginForm.addEventListener("submit", async (e) => {
         const userDoc = await getDoc(doc(db, "users", user.uid));
 
         if (!userDoc.exists()) {
-            message.textContent = "User profile not found.";
-            message.style.color = "red";
+            setMessage("User profile not found.", "red");
             return;
         }
 
         const userData = userDoc.data();
 
         if (userData.accountStatus !== "Active") {
-            message.textContent = "Your account has been locked. Please contact admin.";
-            message.style.color = "red";
+            setMessage("Your account has been locked. Please contact admin.", "red");
             return;
         }
 
@@ -63,21 +81,20 @@ loginForm.addEventListener("submit", async (e) => {
     } catch (error) {
         switch (error.code) {
             case "auth/invalid-credential":
-                message.textContent = "Invalid email or password.";
+                setMessage("Invalid email or password.", "red");
                 break;
             case "auth/user-not-found":
-                message.textContent = "No account found with this email.";
+                setMessage("No account found with this email.", "red");
                 break;
             case "auth/wrong-password":
-                message.textContent = "Incorrect password.";
+                setMessage("Incorrect password.", "red");
                 break;
             case "auth/invalid-email":
-                message.textContent = "Invalid email address.";
+                setMessage("Invalid email address.", "red");
                 break;
             default:
-                message.textContent = error.message;
+                setMessage(error.message, "red");
         }
-
-        message.style.color = "red";
     }
-});
+    });
+}

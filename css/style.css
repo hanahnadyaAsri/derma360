@@ -178,9 +178,11 @@ button:hover {
 }
 
 .logo img {
-    height: 55px;
+    height: 48px;
     width: auto;
+    max-width: 160px;
     display: block;
+    object-fit: contain;
 }
 
 .hero-section {

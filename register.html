@@ -10,52 +10,45 @@
 
 <body>
 
-    <div id="a11y-top">
-
-            <button id="a11y-toggle" class="nav-btn" aria-label="Buka Mod Kebolehcapaian">
-
-                Mod Kebolehcapaian
-
-            </button>
-
-    <div id="a11y-panel-slot"></div>
-
-    </div>
-
     <div class="auth-container">
         <h1>Daftar Pengguna</h1>
         <p>Muat naik dokumen untuk bantuan OCR, kemudian sahkan maklumat anda.</p>
 
         <form id="registerForm">
-        
-            <div id="ocrUploadBox"></div>
-        
+
+            <label>Upload MyKad / Kad OKU / Dokumen NGO</label>
+            <input type="file" id="documentUpload" accept="image/*">
+
+            <button type="button" id="ocrBtn">Extract with OCR</button>
+
+            <p id="ocrStatus"></p>
+
             <input type="text" id="name" placeholder="Full Name" required>
-        
+
             <input type="text" id="ic_number" placeholder="IC Number" required>
-        
+
             <textarea id="address" placeholder="Address extracted from document"></textarea>
-        
+
             <input type="email" id="email" placeholder="Email Address" required>
-        
+
             <div class="password-group">
                 <input type="password" id="password" placeholder="Password" required>
                 <button type="button" class="toggle-password" data-target="password">👁️</button>
             </div>
-        
+
             <div class="password-group">
                 <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
                 <button type="button" class="toggle-password" data-target="confirmPassword">👁️</button>
             </div>
-        
+
             <input type="text" id="phone" placeholder="Phone Number" required>
-        
+
             <input type="text" id="pwd_card_number" placeholder="PWD Card Number (Optional)">
-        
+
             <input type="text" id="disability_category" placeholder="Disability Category (Optional)">
-        
+
             <button type="submit">Register</button>
-        
+
         </form>
 
         <p>Already have an account? <a href="login.html">Login here</a></p>
@@ -65,6 +58,6 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="js/ocr-handler.js"></script>
     <script type="module" src="js/register.js"></script>
-    <script src="js/accessibility.js"></script>`r`n</body>
+</body>
 
 </html>
