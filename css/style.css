@@ -221,6 +221,11 @@ button:hover {
 .dashboard-actions a,
 .admin-menu a {
     text-decoration: none;
+    display: block;
+}
+
+.hero-buttons button {
+    width: 100%;
 }
 
 .info-grid {

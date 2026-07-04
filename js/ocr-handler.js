@@ -1,193 +1,331 @@
-const documentUpload = document.getElementById("documentUpload");
-const ocrBtn = document.getElementById("ocrBtn");
-const ocrStatus = document.getElementById("ocrStatus");
+window.D360 = window.D360 || {};
 
-const nameInput = document.getElementById("name");
-const icInput = document.getElementById("ic_number");
-const addressInput = document.getElementById("address");
-const pwdInput = document.getElementById("pwd_card_number");
+D360._tesseractPromise = null;
 
-ocrBtn.addEventListener("click", async () => {
-    const file = documentUpload.files[0];
-
-    if (!file) {
-        showStatus("Please upload a document first.", "red");
-        return;
+D360.loadTesseract = function () {
+    if (window.Tesseract) {
+        return Promise.resolve(window.Tesseract);
     }
 
-    showStatus("Scanning document... Please wait.", "blue");
-
-    try {
-        const result = await Tesseract.recognize(file, "eng+msa", {
-            logger: (m) => {
-                if (m.status === "recognizing text") {
-                    const progress = Math.round(m.progress * 100);
-                    showStatus(`OCR processing... ${progress}%`, "blue");
-                }
-            }
-        });
-
-        const text = result.data.text;
-        console.log("OCR Result:", text);
-
-        const extracted = extractDocumentData(text);
-
-        if (extracted.ic_number) icInput.value = extracted.ic_number;
-        if (extracted.name) nameInput.value = extracted.name;
-        if (extracted.address) addressInput.value = extracted.address;
-        if (extracted.pwd_card_number) pwdInput.value = extracted.pwd_card_number;
-
-        showStatus("OCR completed. Please verify and correct the extracted information.", "green");
-
-    } catch (error) {
-        console.error(error);
-        showStatus("OCR failed. Please try a clearer image.", "red");
+    if (D360._tesseractPromise) {
+        return D360._tesseractPromise;
     }
-});
 
-function showStatus(text, color) {
-    ocrStatus.textContent = text;
-    ocrStatus.style.color = color;
-}
+    D360._tesseractPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
 
-function extractDocumentData(text) {
+        script.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js";
+
+        script.onload = () => resolve(window.Tesseract);
+
+        script.onerror = () => reject(new Error("Gagal memuat pustaka OCR."));
+
+        document.head.appendChild(script);
+    });
+
+    return D360._tesseractPromise;
+};
+
+D360.parseOcrText = function (rawText, docType) {
+    const text = (rawText || "").replace(/\r/g, "");
     const lines = text
-        .split(/\r?\n/)
-        .map(line => cleanLine(line))
-        .filter(line => line.length > 1);
+        .split("\n")
+        .map(line => line.trim())
+        .filter(Boolean);
 
-    return {
-        ic_number: extractIC(text),
-        name: extractName(lines),
-        address: extractAddress(lines),
-        pwd_card_number: extractPWDCard(text)
-    };
-}
+    const upper = text.toUpperCase();
 
-function cleanLine(line) {
-    return line
-        .replace(/[|_~`^]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
-}
+    let ic = "";
+    const icMatch = text.match(/\b(\d{6})[-\s]?(\d{2})[-\s]?(\d{4})\b/);
 
-function extractIC(text) {
-    const normalized = text.replace(/[^\d]/g, "");
-    const match = normalized.match(/\d{12}/);
-    return match ? match[0] : "";
-}
+    if (icMatch) {
+        ic = `${icMatch[1]}${icMatch[2]}${icMatch[3]}`;
+    }
 
-function extractName(lines) {
-    const blacklist = [
-        "MALAYSIA",
-        "KAD PENGENALAN",
-        "IDENTITY CARD",
-        "MYKAD",
-        "WARGANEGARA",
-        "KAD OKU",
-        "JABATAN KEBAJIKAN",
-        "MASYARAKAT",
-        "LELAKI",
-        "PEREMPUAN",
-        "ISLAM",
-        "NO",
-        "ALAMAT",
-        "TARIKH",
-        "LAHIR"
+    let dob = "";
+
+    if (icMatch) {
+        const yy = parseInt(icMatch[1].slice(0, 2), 10);
+        const mm = icMatch[1].slice(2, 4);
+        const dd = icMatch[1].slice(4, 6);
+
+        const nowYY = new Date().getFullYear() % 100;
+        const century = yy > nowYY ? "19" : "20";
+
+        if (+mm >= 1 && +mm <= 12 && +dd >= 1 && +dd <= 31) {
+            dob = `${century}${icMatch[1].slice(0, 2)}-${mm}-${dd}`;
+        }
+    }
+
+    let gender = "";
+
+    if (icMatch) {
+        gender =
+            parseInt(icMatch[3].slice(-1), 10) % 2 === 1
+                ? "Lelaki"
+                : "Perempuan";
+    }
+
+    const skipRe =
+        /(MYKAD|KAD PENGENALAN|MALAYSIA|WARGANEGARA|LELAKI|PEREMPUAN|ISLAM|ALAMAT|NAMA|IDENTITY|CARD|OKU|ORANG KURANG UPAYA|JABATAN|KEBAJIKAN)/i;
+
+    let name = "";
+
+    for (const line of lines) {
+        const clean = line
+            .replace(/[^A-Za-z@' \-]/g, "")
+            .trim();
+
+        if (clean.length < 6) continue;
+        if (skipRe.test(clean)) continue;
+
+        if (
+            clean === clean.toUpperCase() &&
+            /^[A-Z][A-Z '\-]+$/.test(clean)
+        ) {
+            if (clean.length > name.length) {
+                name = clean;
+            }
+        }
+    }
+
+    let address = "";
+
+    const postcodeIndex = lines.findIndex(line =>
+        /\b\d{5}\b/.test(line)
+    );
+
+    if (postcodeIndex !== -1) {
+        const start = Math.max(0, postcodeIndex - 2);
+
+        address = lines
+            .slice(start, postcodeIndex + 2)
+            .join(", ");
+    }
+
+    let okuCategory = "";
+
+    const okuKeys = [
+        "PENDENGARAN",
+        "PENGLIHATAN",
+        "FIZIKAL",
+        "PERTUTURAN",
+        "MENTAL",
+        "PEMBELAJARAN",
+        "PELBAGAI"
     ];
 
-    const candidates = lines.filter(line => {
-        const upper = line.toUpperCase();
-
-        return (
-            upper.length >= 6 &&
-            upper.length <= 60 &&
-            /^[A-Z\s'@.-]+$/.test(upper) &&
-            !/\d/.test(upper) &&
-            !blacklist.some(word => upper.includes(word))
-        );
-    });
-
-    return candidates.length ? candidates[0].toUpperCase() : "";
-}
-
-function extractAddress(lines) {
-    const addressKeywords = [
-        "NO ",
-        "JALAN",
-        "LORONG",
-        "TAMAN",
-        "KAMPUNG",
-        "KG ",
-        "BANDAR",
-        "PERSIARAN",
-        "LOT",
-        "BATU",
-        "FELDA",
-        "JLN"
-    ];
-
-    const stateKeywords = [
-        "SELANGOR",
-        "PERAK",
-        "PAHANG",
-        "JOHOR",
-        "KEDAH",
-        "KELANTAN",
-        "MELAKA",
-        "NEGERI SEMBILAN",
-        "PULAU PINANG",
-        "PERLIS",
-        "SABAH",
-        "SARAWAK",
-        "TERENGGANU",
-        "KUALA LUMPUR",
-        "PUTRAJAYA",
-        "LABUAN"
-    ];
-
-    const startIndex = lines.findIndex(line => {
-        const upper = line.toUpperCase();
-        return addressKeywords.some(keyword => upper.includes(keyword));
-    });
-
-    if (startIndex === -1) return "";
-
-    const addressLines = [];
-
-    for (let i = startIndex; i < Math.min(startIndex + 5, lines.length); i++) {
-        const line = lines[i];
-
-        if (line.length < 3) continue;
-
-        addressLines.push(line);
-
-        const upper = line.toUpperCase();
-        if (stateKeywords.some(state => upper.includes(state))) {
+    for (const key of okuKeys) {
+        if (upper.includes(key)) {
+            okuCategory =
+                key.charAt(0) + key.slice(1).toLowerCase();
             break;
         }
     }
 
-    return addressLines.join(", ");
-}
+    let okuNumber = "";
 
-function extractPWDCard(text) {
-    const patterns = [
-        /OKU[-\s]?[A-Z0-9]{4,20}/i,
-        /NO\.?\s*OKU[:\s-]*[A-Z0-9]{4,20}/i,
-        /KAD\s*OKU[:\s-]*[A-Z0-9]{4,20}/i
-    ];
+    const okuMatch = text.match(/OKU[-\s]?[A-Z0-9]{4,20}/i);
 
-    for (const pattern of patterns) {
-        const match = text.match(pattern);
-        if (match) {
-            return match[0]
-                .replace(/NO\.?\s*OKU[:\s-]*/i, "")
-                .replace(/KAD\s*OKU[:\s-]*/i, "")
-                .toUpperCase()
-                .trim();
-        }
+    if (okuMatch) {
+        okuNumber = okuMatch[0].toUpperCase().replace(/\s+/g, "");
     }
 
-    return "";
+    const output = {
+        docType: docType || "mykad"
+    };
+
+    if (name) output.name = name;
+    if (ic) output.ic_number = ic;
+    if (gender) output.gender = gender;
+    if (dob) output.dob = dob;
+    if (address) output.address = address;
+    if (okuNumber) output.pwd_card_number = okuNumber;
+    if (docType === "oku-card" && okuCategory) {
+        output.disability_category = okuCategory;
+    }
+
+    output.rawText = text.slice(0, 500);
+
+    return output;
+};
+
+D360.runOcr = async function (file, docType, onProgress) {
+    const Tesseract = await D360.loadTesseract();
+
+    let result;
+
+    try {
+        result = await Tesseract.recognize(file, "eng+msa", {
+            logger: message => {
+                if (
+                    onProgress &&
+                    message.status === "recognizing text"
+                ) {
+                    onProgress(
+                        Math.round((message.progress || 0) * 100)
+                    );
+                }
+            }
+        });
+    } catch {
+        result = await Tesseract.recognize(file, "eng", {
+            logger: message => {
+                if (
+                    onProgress &&
+                    message.status === "recognizing text"
+                ) {
+                    onProgress(
+                        Math.round((message.progress || 0) * 100)
+                    );
+                }
+            }
+        });
+    }
+
+    const parsed = D360.parseOcrText(result.data.text, docType);
+
+    if (!parsed.ic_number && !parsed.name) {
+        const error = new Error("OCR_LOW_QUALITY");
+        error.rawText = result.data.text;
+        throw error;
+    }
+
+    return parsed;
+};
+
+D360.attachOcrUploader = function (options) {
+    const root = document.getElementById(options.containerId);
+
+    if (!root) return;
+
+    const docType = options.docType || "mykad";
+
+    const label =
+        docType === "oku-card"
+            ? "Kad OKU"
+            : docType === "ngo-doc"
+                ? "Dokumen NGO"
+                : "MyKad";
+
+    root.innerHTML = `
+        <div class="ocr-card">
+            <label for="${options.containerId}-file">
+                Muat naik foto ${label} yang jelas
+            </label>
+
+            <input
+                type="file"
+                accept="image/*"
+                id="${options.containerId}-file"
+            >
+
+            <div id="${options.containerId}-preview"></div>
+
+            <p id="${options.containerId}-status" class="ocr-status"></p>
+
+            <div id="${options.containerId}-result" class="ocr-result"></div>
+        </div>
+    `;
+
+    const fileInput = document.getElementById(`${options.containerId}-file`);
+    const preview = document.getElementById(`${options.containerId}-preview`);
+    const status = document.getElementById(`${options.containerId}-status`);
+    const resultBox = document.getElementById(`${options.containerId}-result`);
+
+    fileInput.addEventListener("change", async () => {
+        const file = fileInput.files && fileInput.files[0];
+
+        if (!file) return;
+
+        preview.innerHTML = `
+            <img
+                src="${URL.createObjectURL(file)}"
+                alt="Pratonton dokumen"
+                class="ocr-preview-img"
+            >
+        `;
+
+        status.textContent = "Memuat enjin OCR...";
+        status.style.color = "blue";
+
+        resultBox.innerHTML = "";
+
+        try {
+            const data = await D360.runOcr(
+                file,
+                docType,
+                progress => {
+                    status.textContent =
+                        `Mengimbas dokumen... ${progress}%`;
+                }
+            );
+
+            status.textContent =
+                "Maklumat berjaya diekstrak. Sila semak sebelum meneruskan.";
+            status.style.color = "green";
+
+            const display = { ...data };
+            delete display.rawText;
+
+            resultBox.innerHTML = `
+                <div class="ocr-result-card">
+                    ${Object.entries(display)
+                    .map(([key, value]) => {
+                        return `
+                                <p>
+                                    <strong>${formatOcrLabel(key)}:</strong>
+                                    ${value}
+                                </p>
+                            `;
+                    })
+                    .join("")}
+                </div>
+            `;
+
+            autoFillRegisterForm(data);
+
+            if (typeof options.onExtract === "function") {
+                options.onExtract(data);
+            }
+
+        } catch (error) {
+            console.warn("OCR error:", error);
+
+            status.textContent =
+                "Tidak dapat mengekstrak maklumat. Sila guna imej yang lebih jelas.";
+            status.style.color = "red";
+        }
+    });
+};
+
+function autoFillRegisterForm(data) {
+    setValue("name", data.name);
+    setValue("ic_number", data.ic_number);
+    setValue("address", data.address);
+    setValue("pwd_card_number", data.pwd_card_number);
+    setValue("disability_category", data.disability_category);
+}
+
+function setValue(id, value) {
+    const input = document.getElementById(id);
+
+    if (input && value) {
+        input.value = value;
+    }
+}
+
+function formatOcrLabel(key) {
+    const labels = {
+        docType: "Jenis Dokumen",
+        name: "Nama",
+        ic_number: "Nombor IC",
+        gender: "Jantina",
+        dob: "Tarikh Lahir",
+        address: "Alamat",
+        pwd_card_number: "Nombor Kad OKU",
+        disability_category: "Kategori Ketidakupayaan"
+    };
+
+    return labels[key] || key;
 }
