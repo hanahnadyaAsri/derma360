@@ -19,6 +19,7 @@
 
 html {
     scroll-behavior: smooth;
+    font-size: 18px;
 }
 
 body {
@@ -26,7 +27,7 @@ body {
     background: var(--bg);
     color: var(--text);
     margin: 0;
-    font-size: 18px;
+    font-size: 1rem;
     line-height: 1.7;
 }
 
@@ -39,11 +40,21 @@ h3 {
 
 h1 {
     text-align: center;
-    font-size: 40px;
+    font-size: 2.2rem;
 }
 
-p {
-    font-size: 18px;
+p,
+li,
+a,
+label,
+span,
+input,
+select,
+textarea,
+button,
+td,
+th {
+    font-size: 1rem;
 }
 
 a {
@@ -80,7 +91,6 @@ button {
     width: 100%;
     padding: 16px;
     margin: 10px 0;
-    font-size: 18px;
     border-radius: 10px;
 }
 
@@ -135,7 +145,7 @@ button:hover {
 .navbar h2 {
     color: #ffffff;
     margin: 0;
-    font-size: 30px;
+    font-size: 1.65rem;
 }
 
 .navbar nav {
@@ -148,7 +158,6 @@ button:hover {
 .navbar a {
     color: #ffffff;
     text-decoration: none;
-    font-size: 18px;
 }
 
 .navbar a:hover {
@@ -163,6 +172,17 @@ button:hover {
     color: #ffffff !important;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 55px;
+    width: auto;
+    display: block;
+}
+
 .hero-section {
     width: 92%;
     max-width: 1100px;
@@ -175,12 +195,12 @@ button:hover {
 }
 
 .hero-section h1 {
-    font-size: 64px;
+    font-size: 3.55rem;
     margin-bottom: 10px;
 }
 
 .hero-section h2 {
-    font-size: 30px;
+    font-size: 1.65rem;
     color: var(--text);
 }
 
@@ -261,7 +281,7 @@ button:hover {
     padding: 4px;
     background: transparent;
     color: #111111;
-    font-size: 22px;
+    font-size: 1.22rem;
 }
 
 .poster-preview img {
@@ -377,7 +397,7 @@ footer p {
 }
 
 .stat-icon {
-    font-size: 34px;
+    font-size: 1.9rem;
 }
 
 .stat-card p,
@@ -388,7 +408,7 @@ footer p {
 }
 
 .stat-card h2 {
-    font-size: 34px;
+    font-size: 1.9rem;
     margin: 0;
     color: var(--primary);
 }
@@ -402,7 +422,154 @@ footer p {
     transition: 0.2s ease;
 }
 
-/* Accessibility Toolbar */
+/* ==========================================================
+   Accessibility Button and Panel
+========================================================== */
+
+#a11y-toggle {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    width: 58px;
+    height: 58px;
+    min-height: 58px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 1.6rem;
+    cursor: pointer;
+    z-index: 99999;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+#a11y-toggle:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+.a11y-panel {
+    position: fixed;
+    right: 22px;
+    bottom: 92px;
+    width: 340px;
+    max-width: calc(100vw - 32px);
+    background: #ffffff;
+    color: var(--text);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--border);
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: 0.25s ease;
+}
+
+.a11y-panel.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.a11y-panel h3 {
+    margin: 0 0 18px;
+    color: var(--primary);
+    font-size: 1.15rem;
+}
+
+.size-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 12px 0 18px;
+}
+
+.size-buttons button {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #f7f7f7;
+    color: var(--text);
+    font-size: 0.85rem;
+}
+
+.size-buttons button:hover,
+.size-buttons button.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+.a11y-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.a11y-row span {
+    flex: 1;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    min-width: 54px;
+    height: 30px;
+    min-height: 30px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 999px;
+    background: #cbd5e1;
+    cursor: pointer;
+}
+
+.switch::before {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    transition: 0.25s ease;
+}
+
+.switch.on {
+    background: var(--accent);
+}
+
+.switch.on::before {
+    transform: translateX(24px);
+}
+
+#a11y-reset {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #ffffff;
+}
+
+#a11y-reset:hover {
+    background: var(--accent-dark);
+}
+
+/* Optional old toolbar support */
 .accessibility-toolbar {
     position: sticky;
     top: 0;
@@ -426,45 +593,33 @@ footer p {
     font-weight: bold;
 }
 
-.accessibility-toolbar button:focus {
-    outline: 4px solid var(--focus);
-}
+/* ==========================================================
+   Accessibility Modes
+   JS adds these classes to <html> / documentElement.
+========================================================== */
 
-.high-contrast {
+.high-contrast,
+.high-contrast body {
     background: #000000 !important;
     color: #ffffff !important;
 }
 
-.high-contrast .auth-container,
-.high-contrast .info-section,
-.high-contrast .campaign-preview,
-.high-contrast .about-section,
-.high-contrast .info-card,
-.high-contrast .campaign-card,
-.high-contrast .admin-hero,
-.high-contrast .stat-card,
-.high-contrast .admin-menu-card,
-.high-contrast .receipt-card {
-    background: #000000 !important;
+.high-contrast *,
+.high-contrast *::before,
+.high-contrast *::after {
+    background-color: #000000 !important;
     color: #ffffff !important;
-    border: 2px solid #ffffff !important;
-}
-
-.high-contrast h1,
-.high-contrast h2,
-.high-contrast h3,
-.high-contrast p,
-.high-contrast label,
-.high-contrast strong,
-.high-contrast td {
-    color: #ffffff !important;
+    border-color: #ffffff !important;
+    box-shadow: none !important;
 }
 
 .high-contrast a {
-    color: #ffcc00 !important;
+    color: #ffeb3b !important;
 }
 
-.high-contrast button {
+.high-contrast button,
+.high-contrast .switch.on,
+.high-contrast #a11y-reset {
     background: #ffcc00 !important;
     color: #000000 !important;
 }
@@ -477,6 +632,20 @@ footer p {
     border: 2px solid #ffffff !important;
 }
 
+.high-contrast img {
+    filter: contrast(1.15);
+}
+
+.reading-mode body {
+    line-height: 2 !important;
+    letter-spacing: 0.03em;
+}
+
+.reading-mode p,
+.reading-mode li {
+    max-width: 80ch;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
 
@@ -487,10 +656,6 @@ footer p {
 }
 
 @media (max-width: 760px) {
-    body {
-        font-size: 17px;
-    }
-
     .navbar {
         flex-direction: column;
         gap: 16px;
@@ -510,7 +675,7 @@ footer p {
     }
 
     h1 {
-        font-size: 32px;
+        font-size: 1.8rem;
     }
 
     .hero-section {
@@ -518,11 +683,11 @@ footer p {
     }
 
     .hero-section h1 {
-        font-size: 44px;
+        font-size: 2.45rem;
     }
 
     .hero-section h2 {
-        font-size: 24px;
+        font-size: 1.35rem;
     }
 
     .hero-buttons,
@@ -536,16 +701,16 @@ footer p {
     .campaign-img {
         height: 220px;
     }
-}
-.logo {
-    display: flex;
-    align-items: center;
-}
 
-.logo img {
-    height: 55px;
-    width: auto;
-    display: block;
+    .a11y-panel {
+        right: 16px;
+        bottom: 88px;
+        width: calc(100vw - 32px);
+    }
+
+    .size-buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 /* Print Receipt */
@@ -569,17 +734,9 @@ footer p {
     button,
     a,
     .navbar,
-    .accessibility-toolbar {
+    .accessibility-toolbar,
+    #a11y-toggle,
+    .a11y-panel {
         display: none !important;
     }
-    .logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    height: 55px;
-    width: auto;
-    display: block;
-}
 }

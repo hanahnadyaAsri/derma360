@@ -8,10 +8,14 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
+
 <body>
 
     <header class="navbar">
         <div class="logo">
+            <a href="index.html">
+                <img src="images/logo_d360.png" alt="Derma360 Logo">
+            </a>
             <h2>Derma360 Admin</h2>
         </div>
 
@@ -22,8 +26,16 @@
             <a href="list-approval.html">Pengesahan</a>
             <a href="list-report.html">Laporan</a>
             <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+                    <button id="a11y-toggle" class="nav-btn" aria-label="Buka Mod Kebolehcapaian">
+
+                Mod Kebolehcapaian
+
+            </button>
+
         </nav>
     </header>
+
+    <div id="a11y-panel-slot"></div>
 
     <main class="admin-container">
 
@@ -91,7 +103,7 @@
     </footer>
 
     <script type="module" src="js/admin.js"></script>
-
+     <script src="js/accessibility.js"></script> 
 </body>
 
 </html>
