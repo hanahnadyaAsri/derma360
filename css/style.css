@@ -2,12 +2,13 @@
     --primary: #00796b;
     --primary-dark: #005f56;
     --accent: #f57c00;
-    --accent-dark: #c85f00;
+    --accent-dark: #b84f00;
     --bg: #f4f8f7;
     --card: #ffffff;
     --text: #1f2933;
-    --muted: #5f6b73;
-    --border: #cfd8dc;
+    --muted: #4b5563;
+    --border: #b0bec5;
+    --focus: #ffcc00;
     --shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
     --radius: 18px;
 }
@@ -16,12 +17,15 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     margin: 0;
-    padding: 0;
     font-size: 18px;
     line-height: 1.7;
 }
@@ -52,7 +56,7 @@ button:focus,
 input:focus,
 select:focus,
 textarea:focus {
-    outline: 4px solid var(--accent);
+    outline: 4px solid var(--focus);
     outline-offset: 3px;
 }
 
@@ -84,7 +88,7 @@ input,
 select,
 textarea {
     border: 2px solid var(--border);
-    background: #fff;
+    background: #ffffff;
     color: var(--text);
 }
 
@@ -95,7 +99,7 @@ textarea {
 
 button {
     background: var(--primary);
-    color: #fff;
+    color: #ffffff;
     border: none;
     cursor: pointer;
     font-weight: 700;
@@ -121,7 +125,7 @@ button:hover {
 .navbar {
     width: 100%;
     background: var(--primary);
-    color: white;
+    color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -129,7 +133,7 @@ button:hover {
 }
 
 .navbar h2 {
-    color: white;
+    color: #ffffff;
     margin: 0;
     font-size: 30px;
 }
@@ -142,9 +146,13 @@ button:hover {
 }
 
 .navbar a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     font-size: 18px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
 }
 
 .nav-btn,
@@ -152,14 +160,14 @@ button:hover {
     width: auto;
     padding: 10px 20px;
     border-radius: 999px;
-    color: white !important;
+    color: #ffffff !important;
 }
 
 .hero-section {
     width: 92%;
     max-width: 1100px;
     margin: 45px auto;
-    background: white;
+    background: #ffffff;
     border-radius: 28px;
     padding: 80px 45px;
     text-align: center;
@@ -190,7 +198,8 @@ button:hover {
 }
 
 .hero-buttons a,
-.dashboard-actions a {
+.dashboard-actions a,
+.admin-menu a {
     text-decoration: none;
 }
 
@@ -215,14 +224,14 @@ button:hover {
 
 .campaign-img {
     width: 100%;
-    max-height: 380px;
+    height: 260px;
     object-fit: cover;
     border-radius: 14px;
 }
 
 .progress-bar {
     width: 100%;
-    height: 20px;
+    height: 22px;
     background: #d9e2e1;
     border-radius: 999px;
     overflow: hidden;
@@ -251,7 +260,7 @@ button:hover {
     min-height: auto;
     padding: 4px;
     background: transparent;
-    color: #111;
+    color: #111111;
     font-size: 22px;
 }
 
@@ -295,7 +304,7 @@ button:hover {
 }
 
 .receipt-card {
-    background: white;
+    background: #ffffff;
     border: 2px solid var(--border);
     padding: 32px;
     border-radius: 16px;
@@ -306,7 +315,6 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    overflow-x: auto;
 }
 
 th,
@@ -318,20 +326,164 @@ td {
 
 th {
     background: var(--primary);
-    color: white;
+    color: #ffffff;
 }
 
 footer {
     background: var(--primary);
-    color: white;
+    color: #ffffff;
     text-align: center;
     padding: 24px;
     margin-top: 50px;
 }
 
 footer p {
-    color: white;
+    color: #ffffff;
     margin: 0;
+}
+
+/* Admin */
+.admin-container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.admin-hero {
+    background: #ffffff;
+    padding: 45px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.admin-stats,
+.admin-menu {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.stat-card,
+.admin-menu-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    border: 1px solid var(--border);
+}
+
+.stat-icon {
+    font-size: 34px;
+}
+
+.stat-card p,
+.admin-menu-card p {
+    text-align: left;
+    color: var(--muted);
+    margin-bottom: 5px;
+}
+
+.stat-card h2 {
+    font-size: 34px;
+    margin: 0;
+    color: var(--primary);
+}
+
+.admin-menu-card h3 {
+    margin-top: 0;
+}
+
+.admin-menu-card:hover {
+    transform: translateY(-5px);
+    transition: 0.2s ease;
+}
+
+/* Accessibility Toolbar */
+.accessibility-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: #111111;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.accessibility-toolbar button {
+    width: auto;
+    min-height: 44px;
+    padding: 10px 18px;
+    background: #ffffff;
+    color: #111111;
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.accessibility-toolbar button:focus {
+    outline: 4px solid var(--focus);
+}
+
+.high-contrast {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.high-contrast .auth-container,
+.high-contrast .info-section,
+.high-contrast .campaign-preview,
+.high-contrast .about-section,
+.high-contrast .info-card,
+.high-contrast .campaign-card,
+.high-contrast .admin-hero,
+.high-contrast .stat-card,
+.high-contrast .admin-menu-card,
+.high-contrast .receipt-card {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast p,
+.high-contrast label,
+.high-contrast strong,
+.high-contrast td {
+    color: #ffffff !important;
+}
+
+.high-contrast a {
+    color: #ffcc00 !important;
+}
+
+.high-contrast button {
+    background: #ffcc00 !important;
+    color: #000000 !important;
+}
+
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+
+    .admin-stats,
+    .admin-menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 760px) {
@@ -375,90 +527,28 @@ footer p {
 
     .hero-buttons,
     .dashboard-actions,
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.admin-container {
-    width: 92%;
-    max-width: 1200px;
-    margin: 40px auto;
-}
-
-.admin-hero {
-    background: white;
-    padding: 45px;
-    border-radius: 24px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    margin-bottom: 30px;
-}
-
-.admin-stats,
-.admin-menu {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
-    margin-bottom: 30px;
-}
-
-.stat-card,
-.admin-menu-card {
-    background: white;
-    border-radius: 20px;
-    padding: 28px;
-    box-shadow: var(--shadow);
-    text-decoration: none;
-    border: 1px solid var(--border);
-}
-
-.stat-icon {
-    font-size: 34px;
-}
-
-.stat-card p {
-    text-align: left;
-    color: var(--muted);
-    margin-bottom: 5px;
-}
-
-.stat-card h2 {
-    font-size: 34px;
-    margin: 0;
-    color: var(--primary);
-}
-
-.admin-menu-card h3 {
-    margin-top: 0;
-}
-
-.admin-menu-card p {
-    text-align: left;
-    color: var(--text);
-}
-
-.admin-menu-card:hover {
-    transform: translateY(-5px);
-    transition: 0.2s ease;
-}
-
-@media (max-width: 900px) {
-
-    .admin-stats,
-    .admin-menu {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-
+    .info-grid,
     .admin-stats,
     .admin-menu {
         grid-template-columns: 1fr;
     }
+
+    .campaign-img {
+        height: 220px;
+    }
+}
+.logo {
+    display: flex;
+    align-items: center;
 }
 
+.logo img {
+    height: 55px;
+    width: auto;
+    display: block;
+}
+
+/* Print Receipt */
 @media print {
     body * {
         visibility: hidden;
@@ -477,7 +567,19 @@ footer p {
     }
 
     button,
-    a {
-        display: none;
+    a,
+    .navbar,
+    .accessibility-toolbar {
+        display: none !important;
     }
+    .logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 55px;
+    width: auto;
+    display: block;
+}
 }

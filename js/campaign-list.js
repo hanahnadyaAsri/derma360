@@ -58,9 +58,9 @@ async function loadActiveCampaigns() {
                     <div class="progress-fill" style="width:${percentage}%"></div>
                 </div>
 
-                <button onclick="window.location.href='donation.html?campaignId=${campaignId}'">
-                    Sumbang Sekarang
-                </button>
+                <button onclick="window.location.href='login.html?redirect=${encodeURIComponent(`donation.html?campaignId=${campaignId}`)}'">
+    Sumbang Sekarang
+</button>
             `;
 
             campaignList.appendChild(card);
