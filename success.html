@@ -33,15 +33,14 @@
             <a href="history.html">Lihat Sejarah Sumbangan</a>
         </p>
     </main>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const receiptId = params.get("receiptId");
 
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const donationId = params.get("donationId");
-
-        document.getElementById("receiptBtn").addEventListener("click", () => {
-            window.location.href = `receipt.html?donationId=${donationId}`;
-        });
-    </script>
+    document.getElementById("receiptBtn").addEventListener("click", () => {
+        window.location.href = `receipt.html?receiptId=${receiptId}`;
+    });
+</script>
 
     <script src="js/accessibility.js"></script>`r`n</body>
 

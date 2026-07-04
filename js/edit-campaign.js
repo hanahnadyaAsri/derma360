@@ -159,7 +159,7 @@ editCampaignForm.addEventListener("submit", async (e) => {
         showMessage("Kempen berjaya dikemas kini.", "green");
 
         setTimeout(() => {
-            window.location.href = "my-campaigns.html";
+            window.location.href = "my-campaign.html";
         }, 1200);
 
     } catch (error) {

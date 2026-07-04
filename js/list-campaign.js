@@ -1,69 +1,82 @@
 import { auth, db } from "./firebase-config.js";
 
 import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-
-import {
     collection,
+    query,
+    where,
     getDocs
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const campaignList = document.getElementById("campaignList");
 
-onAuthStateChanged(auth, (user) => {
+async function loadActiveCampaigns() {
+    campaignList.innerHTML = "<p>Sedang memuatkan kempen...</p>";
 
-    if (!user) {
-
-        window.location.href = "login.html";
-        return;
-
-    }
-
-    loadCampaigns();
-
-});
-
-async function loadCampaigns() {
-
-    campaignList.innerHTML = "";
-
-    const snapshot = await getDocs(collection(db, "campaigns"));
-
-    snapshot.forEach((docSnap) => {
-
-        const campaign = docSnap.data();
-
-        const percent = Math.min(
-            (campaign.currentAmount / campaign.targetAmount) * 100,
-            100
+    try {
+        const q = query(
+            collection(db, "campaigns"),
+            where("status_kempen", "==", "Aktif")
         );
 
-        const card = document.createElement("div");
+        const snapshot = await getDocs(q);
 
-        card.className = "campaign-card";
+        campaignList.innerHTML = "";
 
-        card.innerHTML = `
+        if (snapshot.empty) {
+            campaignList.innerHTML = "<p>Tiada kempen aktif buat masa ini.</p>";
+            return;
+        }
 
-            <img src="${campaign.mediaUrl}" class="campaign-img">
+        snapshot.forEach((docSnap) => {
+            const campaign = docSnap.data();
+            const campaignId = docSnap.id;
 
-            <h3>${campaign.campaignTitle}</h3>
+            const percentage = Math.min(
+                (campaign.currentAmount / campaign.targetAmount) * 100,
+                100
+            );
 
-            <p><strong>Status:</strong> ${campaign.status_kempen}</p>
+            const card = document.createElement("div");
+            card.className = "campaign-card";
 
-            <p>RM ${campaign.currentAmount} / RM ${campaign.targetAmount}</p>
+            card.innerHTML = `
+                <img src="${campaign.mediaUrl}" class="campaign-img" alt="Poster Kempen">
 
-            <div class="progress-bar">
+                <h3>${campaign.campaignTitle}</h3>
 
-                <div class="progress-fill"
-                    style="width:${percent}%"></div>
+                <p><strong>Kategori:</strong> ${campaign.campaignCategory}</p>
+                <p><strong>Penerima:</strong> ${campaign.beneficiaryName}</p>
+                <p><strong>Lokasi:</strong> ${campaign.location}</p>
+                <p>${campaign.description}</p>
 
-            </div>
+                <p>
+                    <strong>RM ${campaign.currentAmount}</strong>
+                    daripada RM ${campaign.targetAmount}
+                </p>
 
-        `;
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:${percentage}%"></div>
+                </div>
 
-        campaignList.appendChild(card);
+                <button onclick="handleDonate('${campaignId}')">
+    Sumbang Sekarang
+</button>
+            `;
 
-    });
+            campaignList.appendChild(card);
+        });
 
+    } catch (error) {
+        campaignList.innerHTML = `<p style="color:red;">${error.message}</p>`;
+    }
 }
+
+window.handleDonate = function (campaignId) {
+    if (auth.currentUser) {
+        window.location.href = `donation.html?campaignId=${campaignId}`;
+    } else {
+        window.location.href = "login.html";
+    }
+};
+
+loadActiveCampaigns();
