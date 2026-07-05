@@ -4,6 +4,97 @@ const SpeechRecognition =
 const voiceBtn = document.getElementById("voiceBtn");
 const voiceStatus = document.getElementById("voiceStatus");
 
+const pages = [
+    {
+        url: "index.html",
+        keywords: ["laman utama", "home", "utama", "index"]
+    },
+    {
+        url: "campaign.html",
+        keywords: ["kempen", "campaign", "senarai kempen", "lihat kempen"]
+    },
+    {
+        url: "choose-mode.html",
+        keywords: ["pilih mod", "choose mode", "mode", "pilihan"]
+    },
+    {
+        url: "login.html",
+        keywords: ["log masuk", "login", "masuk akaun"]
+    },
+    {
+        url: "register.html",
+        keywords: ["daftar", "register", "cipta akaun"]
+    },
+    {
+        url: "forgot-password.html",
+        keywords: ["lupa kata laluan", "forgot password", "reset password"]
+    },
+    {
+        url: "profile.html",
+        keywords: ["profil", "profile", "akaun saya"]
+    },
+    {
+        url: "donation.html",
+        keywords: ["sumbangan", "donation", "derma"]
+    },
+    {
+        url: "receipt.html",
+        keywords: ["resit", "receipt"]
+    },
+    {
+        url: "history.html",
+        keywords: ["sejarah", "history", "sejarah sumbangan"]
+    },
+    {
+        url: "success.html",
+        keywords: ["berjaya", "success"]
+    },
+    {
+        url: "create-campaign.html",
+        keywords: ["cipta kempen", "mohon bantuan", "buat kempen", "create campaign"]
+    },
+    {
+        url: "edit-campaign.html",
+        keywords: ["edit kempen", "ubah kempen", "kemaskini kempen"]
+    },
+    {
+        url: "my-campaign.html",
+        keywords: ["kempen saya", "my campaign", "kempen sendiri"]
+    },
+    {
+        url: "list-campaign.html",
+        keywords: ["senarai campaign", "senarai semua kempen", "list campaign"]
+    },
+    {
+        url: "list-approval.html",
+        keywords: ["senarai kelulusan", "approval", "list approval", "kelulusan"]
+    },
+    {
+        url: "list-report.html",
+        keywords: ["senarai laporan", "laporan", "report", "list report"]
+    },
+    {
+        url: "list-user.html",
+        keywords: ["senarai pengguna", "pengguna", "user", "list user"]
+    },
+    {
+        url: "admin-dashboard.html",
+        keywords: ["admin", "pentadbir", "dashboard admin"]
+    },
+    {
+        url: "applicant-dashboard.html",
+        keywords: ["dashboard pemohon", "pemohon", "applicant dashboard"]
+    },
+    {
+        url: "donor-dashboard.html",
+        keywords: ["dashboard penderma", "penderma", "donor dashboard"]
+    },
+    {
+        url: "404.html",
+        keywords: ["error", "halaman tidak dijumpai", "404"]
+    }
+];
+
 if (!SpeechRecognition) {
     if (voiceBtn) voiceBtn.style.display = "none";
     console.warn("Speech Recognition is not supported in this browser.");
@@ -44,58 +135,30 @@ if (!SpeechRecognition) {
 }
 
 function runVoiceCommand(command) {
-    if (has(command, ["laman utama", "home", "utama"])) {
-        goTo("index.html", "Membuka laman utama...");
-    }
-
-    else if (has(command, ["kempen", "campaign", "senarai kempen", "lihat kempen"])) {
-        goTo("campaign.html", "Membuka senarai kempen...");
-    }
-
-    else if (has(command, ["log masuk", "login", "masuk akaun"])) {
-        goTo("login.html", "Membuka halaman log masuk...");
-    }
-
-    else if (has(command, ["daftar", "register", "cipta akaun"])) {
-        goTo("register.html", "Membuka halaman daftar...");
-    }
-
-    else if (has(command, ["dashboard", "papan pemuka"])) {
-        goTo("choose-mode.html", "Membuka papan pemuka...");
-    }
-
-    else if (has(command, ["profil", "profile", "akaun saya"])) {
-        goTo("profile.html", "Membuka profil...");
-    }
-
-    else if (has(command, ["sejarah", "history", "sejarah sumbangan"])) {
-        goTo("history.html", "Membuka sejarah sumbangan...");
-    }
-
-    else if (has(command, ["cipta kempen", "mohon bantuan", "buat kempen", "create campaign"])) {
-        goTo("create-campaign.html", "Membuka borang kempen...");
-    }
-
-    else if (has(command, ["kempen saya", "my campaign", "my campaigns"])) {
-        goTo("my-campaigns.html", "Membuka kempen saya...");
-    }
-
-    else if (has(command, ["admin", "pentadbir"])) {
-        goTo("admin-dashboard.html", "Membuka dashboard pentadbir...");
-    }
-
-    else if (has(command, ["kembali", "back"])) {
+    if (has(command, ["kembali", "back"])) {
         showVoiceStatus("Kembali ke halaman sebelumnya...");
-        history.back();
+        setTimeout(() => {
+            history.back();
+        }, 600);
+        return;
     }
 
-    else if (has(command, ["muat semula", "refresh", "reload"])) {
+    if (has(command, ["muat semula", "refresh", "reload"])) {
         showVoiceStatus("Memuat semula halaman...");
-        location.reload();
+        setTimeout(() => {
+            location.reload();
+        }, 600);
+        return;
     }
 
-    else {
-        showVoiceStatus("Arahan tidak dikenali. Cuba sebut: Kempen, Profil, Daftar, atau Laman Utama.");
+    const matchedPage = pages.find(page => has(command, page.keywords));
+
+    if (matchedPage) {
+        goTo(matchedPage.url, "Membuka " + matchedPage.url + "...");
+    } else {
+        showVoiceStatus(
+            "Arahan tidak dikenali. Cuba sebut: Laman Utama, Kempen, Profil, Daftar, Admin, atau Dashboard."
+        );
         hideVoiceStatusLater();
     }
 }

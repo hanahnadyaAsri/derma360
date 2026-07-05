@@ -8,14 +8,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
-    🎤
-</button>
-
-<p id="voiceStatus"></p>
-
-<script src="js/voice-command.js"></script>
-
 <body>
 
     <header class="navbar">
@@ -29,22 +21,9 @@
             <a href="index.html">Laman Utama</a>
             <a href="campaign.html">Kempen</a>
             <a href="#about">Tentang Kami</a>
-
             <a href="login.html" id="loginLink">Log Masuk</a>
-
-            <a href="register.html" id="registerLink" class="nav-btn">
-                Daftar
-            </a>
-
-            <a href="choose-mode.html" id="dashboardLink" style="display:none;">
-                Dashboard
-            </a>
-            <button id="a11y-toggle" class="nav-btn" aria-label="Buka Mod Kebolehcapaian">
-
-                Mod Kebolehcapaian
-
-            </button>
-
+            <a href="register.html" id="registerLink" class="nav-btn">Daftar</a>
+            <a href="choose-mode.html" id="dashboardLink" style="display:none;">Dashboard</a>
         </nav>
     </header>
 
@@ -179,15 +158,18 @@
         </p>
     </footer>
 
+    <button id="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian"></button>
+    
+    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
+        🎤
+    </button>
+    
+    <p id="voiceStatus"></p>
+    
     <script type="module" src="js/index.js"></script>
     <script src="js/accessibility.js"></script>
-<button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
-    🎤
-</button>
-
-<p id="voiceStatus"></p>
-
-<script src="js/voice-command.js"></script>
-</body>
-
-</html>
+    <script src="js/voice-command.js"></script>
+    
+    </body>
+    
+    </html>
