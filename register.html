@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Derma360 | Register</title>
+    <title>Derma360 | Pendaftaran</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -12,52 +12,59 @@
 
     <div class="auth-container">
         <h1>Daftar Pengguna</h1>
-        <p>Muat naik dokumen untuk bantuan OCR, kemudian sahkan maklumat anda.</p>
+        <p>Muat naik dokumen untuk pengesahan OCR, kemudian semak dan sahkan maklumat anda.</p>
 
         <form id="registerForm">
 
-            <label>Upload MyKad / Kad OKU / Dokumen NGO</label>
+            <label>Muat Naik MyKad / Kad OKU / Dokumen NGO</label>
             <input type="file" id="documentUpload" accept="image/*">
 
-            <button type="button" id="ocrBtn">Extract with OCR</button>
+            <button type="button" id="ocrBtn">Ekstrak Maklumat dengan OCR</button>
 
             <p id="ocrStatus"></p>
 
-            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="name" placeholder="Nama Penuh" required>
 
-            <input type="text" id="ic_number" placeholder="IC Number" required>
+            <input type="text" id="ic_number" placeholder="Nombor Kad Pengenalan" required>
 
-            <textarea id="address" placeholder="Address extracted from document"></textarea>
+            <textarea id="address" placeholder="Alamat yang diekstrak daripada dokumen"></textarea>
 
-            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="email" id="email" placeholder="Alamat E-mel" required>
 
             <div class="password-group">
-                <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="password" placeholder="Kata Laluan" required>
                 <button type="button" class="toggle-password" data-target="password">👁️</button>
             </div>
 
             <div class="password-group">
-                <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                <input type="password" id="confirmPassword" placeholder="Sahkan Kata Laluan" required>
                 <button type="button" class="toggle-password" data-target="confirmPassword">👁️</button>
             </div>
 
-            <input type="text" id="phone" placeholder="Phone Number" required>
+            <input type="text" id="phone" placeholder="Nombor Telefon" required>
 
-            <input type="text" id="pwd_card_number" placeholder="PWD Card Number (Optional)">
+            <input type="text" id="pwd_card_number" placeholder="Nombor Kad OKU (Pilihan)">
 
-            <input type="text" id="disability_category" placeholder="Disability Category (Optional)">
+            <input type="text" id="disability_category" placeholder="Kategori Ketidakupayaan (Pilihan)">
 
-            <button type="submit">Register</button>
+            <button type="submit">Daftar</button>
 
         </form>
 
-        <p>Already have an account? <a href="login.html">Login here</a></p>
+        <p>Sudah mempunyai akaun? <a href="login.html">Log masuk di sini</a></p>
         <p id="message"></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="js/ocr-handler.js"></script>
     <script type="module" src="js/register.js"></script>
+<button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
+    🎤
+</button>
+
+<p id="voiceStatus"></p>
+
+<script src="js/voice-command.js"></script>
 </body>
 
 </html>
