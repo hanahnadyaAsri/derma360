@@ -47,23 +47,37 @@ async function loadReceipt() {
 
     receiptBox.innerHTML = `
         <div class="receipt-card">
-            <h2>DERMA360</h2>
-            <h3>RESIT SUMBANGAN DIGITAL</h3>
-            <hr>
+            <div class="receipt-header">
+                <h1>DERMA360</h1>
+                <p>Resit Sumbangan Rasmi</p>
+            </div>
+            
+            <div class="receipt-details">
+                <div class="detail-row"><span>No. Resit:</span> <strong>${receipt.receiptNumber}</strong></div>
+                <div class="detail-row"><span>Tarikh:</span> ${date}</div>
+            </div>
 
-            <p><strong>No. Resit:</strong> ${receipt.receiptNumber}</p>
-            <p><strong>ID Resit:</strong> ${receiptId}</p>
-            <p><strong>Nama Penyumbang:</strong> ${donorName}</p>
-            <p><strong>Kempen:</strong> ${campaignTitle}</p>
-            <p><strong>Jumlah:</strong> RM ${Number(receipt.amount).toFixed(2)}</p>
-            <p><strong>Kaedah Bayaran:</strong> ${receipt.paymentMethod}</p>
-            <p><strong>Status:</strong> ${receipt.paymentStatus}</p>
-            <p><strong>No. Transaksi:</strong> ${receipt.transactionReference}</p>
-            <p><strong>Tarikh:</strong> ${date}</p>
+            <div class="receipt-body">
+                <p>Kepada: <strong>${donorName}</strong></p>
+                <p>Terima kasih atas sumbangan anda untuk kempen:</p>
+                <h3 class="campaign-title">${campaignTitle}</h3>
+                
+                <div class="amount-box">
+                    <small>JUMLAH SUMBANGAN</small>
+                    <h2>RM ${Number(receipt.amount).toFixed(2)}</h2>
+                </div>
 
-            <hr>
-            <p style="text-align:center;">Terima kasih atas sumbangan anda.</p>
-            <p style="text-align:center;">Derma360</p>
+                <table class="receipt-table">
+                    <tr><td>Kaedah Bayaran</td><td>${receipt.paymentMethod}</td></tr>
+                    <tr><td>Status</td><td>${receipt.paymentStatus}</td></tr>
+                    <tr><td>No. Transaksi</td><td>${receipt.transactionReference}</td></tr>
+                </table>
+            </div>
+
+            <div class="receipt-footer">
+                <p>Ini adalah resit janaan komputer dan tidak memerlukan tandatangan.</p>
+                <p><strong>www.derma360.com</strong></p>
+            </div>
         </div>
     `;
 }
