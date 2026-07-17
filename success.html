@@ -10,18 +10,6 @@
 
 <body>
 
-    <div id="a11y-top">
-
-            <button id="a11y-toggle" class="nav-btn" aria-label="Buka Mod Kebolehcapaian">
-
-                Mod Kebolehcapaian
-
-            </button>
-
-    <div id="a11y-panel-slot"></div>
-
-    </div>
-
     <main class="auth-container">
         <h1>Pembayaran Berjaya</h1>
 
@@ -42,12 +30,20 @@
     });
 </script>
 
-    <script src="js/accessibility.js"></script>`r`n<button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
-    🎤
-</button>
+    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
+        ♿
+    </button>
+    
+    <div id="a11y-panel-slot"></div>
+    
+    <!-- VOICE COMMAND BUTTON -->
+    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
+        🎤
+    </button>
+    
+    <p id="voiceStatus"></p>
 
-<p id="voiceStatus"></p>
-
+<script src="js/accessibility.js"></script>
 <script src="js/voice-command.js"></script>
 </body>
 

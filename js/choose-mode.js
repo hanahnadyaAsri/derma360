@@ -1,30 +1,30 @@
 import { auth } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-
-const donorBtn = document.getElementById("donorBtn");
-const applicantBtn = document.getElementById("applicantBtn");
 const userName = document.getElementById("userName");
+const logoutBtn = document.getElementById("logoutBtn");
 
+// 1. Auth Check
 onAuthStateChanged(auth, (user) => {
-
     if (!user) {
         window.location.href = "login.html";
         return;
     }
-
     if (userName) {
-        userName.textContent = user.displayName || "";
+        userName.textContent = user.displayName || "Pengguna";
     }
-
 });
 
-donorBtn.addEventListener("click", () => {
-    window.location.href = "donor-dashboard.html";
-});
+// 2. Logout Functionality (Best Practice)
+import { signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
-applicantBtn.addEventListener("click", () => {
-    window.location.href = "applicant-dashboard.html";
-});
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+        try {
+            await signOut(auth);
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Gagal log keluar:", error);
+        }
+    });
+}
