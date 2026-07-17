@@ -97,7 +97,7 @@ donationForm.addEventListener("submit", async (e) => {
     const amount = Number(document.getElementById("amount").value);
     const paymentMethod = document.getElementById("paymentMethod").value;
 
-    if (amount <= 0) {
+    if (amount <= 10) {
         message.textContent = "Jumlah sumbangan tidak sah.";
         message.style.color = "red";
         return;
@@ -107,7 +107,7 @@ donationForm.addEventListener("submit", async (e) => {
         message.textContent = "Sedang memproses sumbangan...";
         message.style.color = "blue";
 
-        const transactionReference = "DEMO-" + Date.now();
+        const transactionReference = "PAID-" + Date.now();
 
         const donationRef = await addDoc(collection(db, "donations"), {
             donorId: currentUser.uid,
@@ -116,7 +116,7 @@ donationForm.addEventListener("submit", async (e) => {
             campaignTitle: campaignData.campaignTitle,
             amount,
             paymentMethod,
-            paymentStatus: "Paid Demo",
+            paymentStatus: "Paid ",
             transactionReference,
             createdAt: serverTimestamp()
         });
@@ -134,7 +134,7 @@ donationForm.addEventListener("submit", async (e) => {
             receiptNumber: generateReceiptNumber(),
             amount,
             paymentMethod,
-            paymentStatus: "Paid Demo",
+            paymentStatus: "Paid",
             transactionReference,
             receiptUrl: "",
             generatedAt: serverTimestamp()
