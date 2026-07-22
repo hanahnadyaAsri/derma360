@@ -1,5 +1,5 @@
+/* --- TETAPAN UMUM & WARNA --- */
 :root {
-    
     --primary: #00796b;
     --primary-dark: #005f56;
     --accent: #f57c00;
@@ -12,10 +12,24 @@
     --focus: #ffcc00;
     --shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
     --radius: 18px;
+
+    /* Pembolehubah tambahan untuk gaya papan pemuka pentadbir moden */
+    --primary-green: #0D5C3C;
+    --primary-green-hover: #07472d;
+    --accent-green-light: #E8F5E9;
+    --bg-main: #F4F6F8;
+    --card-bg: #FFFFFF;
+    --text-main: #111827;
+    --text-muted: #6B7280;
+    --border-color: #E5E7EB;
+    --sidebar-width: 260px;
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html {
@@ -533,6 +547,326 @@ th {
     transition: 0.2s ease;
 }
 
+/* --- SUSUN ATUR BAHARU: SIDEBAR & DASHBOARD MODEN --- */
+.app-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    flex-shrink: 0;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.sidebar-logo img {
+    height: 32px;
+    object-fit: contain;
+}
+
+.sidebar-logo span {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #00796b;
+    /* Ditukar kepada warna hijau utama */
+}
+
+.sidebar-menu-category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.sidebar-nav a,
+.sidebar-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sidebar-nav a:hover,
+.sidebar-logout:hover {
+    background-color: #e0f2f1;
+    /* Hijau cair apabila tetikus melintas (hover) */
+    color: #00796b;
+}
+
+.sidebar-nav a.active {
+    background-color: #00796b;
+    /* Warna latar belakang menu aktif mengikut tema #00796b */
+    color: white;
+    font-weight: 600;
+}
+
+.sidebar-logout {
+    margin-top: auto;
+    color: #DC2626;
+}
+
+.sidebar-logout:hover {
+    background-color: #FEF2F2;
+    color: #DC2626;
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.2rem;
+    text-align: left;
+}
+
+.header-title p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.header-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.notification-badge {
+    font-size: 1.1rem;
+    background: var(--card-bg);
+    padding: 0.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.card-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.card-dot {
+    font-size: 1.1rem;
+}
+
+.card h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.card-trend {
+    font-size: 0.75rem;
+    color: #10B981;
+    font-weight: 500;
+}
+
+.card-trend.warning {
+    color: #F59E0B;
+}
+
+.highlight-card {
+    background: linear-gradient(135deg, #0D5C3C 0%, #10B981 100%);
+    color: white;
+    border: none;
+}
+
+.highlight-card .card-header-top,
+.highlight-card h2 {
+    color: white;
+}
+
+.card-btn {
+    background: white;
+    color: var(--primary-green);
+    text-decoration: none;
+    text-align: center;
+    padding: 0.4rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: auto;
+}
+
+.section-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.section-block h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.shortcut-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.shortcut-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+    border-radius: 12px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.2s ease;
+}
+
+.shortcut-item:hover {
+    border-color: var(--primary-green);
+    transform: translateY(-2px);
+}
+
+.shortcut-icon {
+    font-size: 1.5rem;
+    background: var(--bg-main);
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.shortcut-item h4 {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    margin-bottom: 0.15rem;
+}
+
+.shortcut-item p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.table-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.data-table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+    padding: 0.75rem 1rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.badge-status {
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-status.done {
+    background-color: #E8F5E9;
+    color: #10B981;
+}
+
+.badge-status.pending {
+    background-color: #FEF3C7;
+    color: #F59E0B;
+}
+
 /* Voice Button - Left */
 .voice-btn {
     position: fixed;
@@ -872,6 +1206,16 @@ footer p {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .analytics-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .shortcut-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 900px) {
 
     .admin-stats,
@@ -998,4 +1342,10 @@ footer p {
     #voiceStatus {
         display: none !important;
     }
+}
+/* Tetapkan warna teks kepala jadual (th) kepada putih supaya jelas kelihatan */
+table th,
+.data-table th,
+.campaign-table th {
+    color: #ffffff !important;
 }

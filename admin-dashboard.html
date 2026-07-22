@@ -5,115 +5,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Papan Pemuka Pentadbir | Derma360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-
 <body>
 
-    <header class="navbar">
-        <div class="logo">
-            <a href="index.html">
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
                 <img src="images/logo_d360.png" alt="Derma360 Logo">
-            </a>
-            <h2>Derma360 Admin</h2>
-        </div>
-
-        <nav>
-            <a href="admin-dashboard.html">Dashboard</a>
-            <a href="list-user.html">Pengguna</a>
-            <a href="campaign-admin.html">Kempen</a>
-            <a href="list-approval.html">Pengesahan</a>
-            <a href="list-report.html">Laporan</a>
-            <button id="logoutBtn" class="nav-logout">Log Keluar
-
-            </button>
-    
-        </nav>
-    </header>
-
-
-    <main class="admin-container">
-
-        <section class="admin-hero">
-            <h1>Papan Pemuka Pentadbir</h1>
-            <p>Urus pengguna, kempen, pengesahan dan laporan kewangan Derma360.</p>
-        </section>
-
-        <section class="admin-stats">
-
-            <div class="stat-card">
-                <span class="stat-icon">👥</span>
-                <p>Jumlah Pengguna</p>
-                <h2 id="totalUsers">0</h2>
+                <span>Derma360</span>
             </div>
 
-            <div class="stat-card">
-                <span class="stat-icon">📢</span>
-                <p>Jumlah Kempen</p>
-                <h2 id="totalCampaigns">0</h2>
-            </div>
+            <div class="sidebar-menu-category">MENU UTAMA</div>
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html" class="active">
+                    <span class="icon">📊</span> Papan Pemuka
+                </a>
+                <a href="list-user.html">
+                    <span class="icon">👥</span> Pengguna
+                </a>
+                <a href="campaign-admin.html">
+                    <span class="icon">📢</span> Kempen
+                </a>
+                <a href="list-approval.html">
+                    <span class="icon">⏳</span> Pengesahan
+                </a>
+                <a href="list-report.html">
+                    <span class="icon">📈</span> Laporan
+                </a>
+            </nav>
 
-            <div class="stat-card">
-                <span class="stat-icon">⏳</span>
-                <p>Menunggu Pengesahan</p>
-                <h2 id="pendingCampaigns">0</h2>
-            </div>
+            <div class="sidebar-menu-category">TETAPAN</div>
+            <nav class="sidebar-nav">
+                <button id="logoutBtn" class="sidebar-logout">
+                    <span class="icon">🚪</span> Log Keluar
+                </button>
+            </nav>
+        </aside>
 
-            <div class="stat-card">
-                <span class="stat-icon">💰</span>
-                <p>Jumlah Sumbangan</p>
-                <h2 id="totalDonation">RM 0</h2>
-            </div>
+        <main class="main-content">
 
-        </section>
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Analisis & Papan Pemuka</h1>
+                    <p>Selamat kembali, Pentadbir. Berikut adalah ringkasan hari ini.</p>
+                </div>
+                <div class="header-profile">
+                    <span class="notification-badge">🔔</span>
+                    <div class="profile-pic">A</div>
+                </div>
+            </header>
 
-        <section class="admin-menu">
+            <section class="analytics-cards">
 
-            <a href="list-user.html" class="admin-menu-card">
-                <h3> Pengurusan Pengguna</h3>
-                <p>Lihat maklumat pengguna berdaftar dan status akaun.</p>
-            </a>
+                <div class="card">
+                    <div class="card-header-top">
+                        <span>Jumlah Pengguna</span>
+                        <span class="card-dot">👥</span>
+                    </div>
+                    <h2 id="totalUsers">0</h2>
+                    <p class="card-trend positive">+12% bulan ini</p>
+                </div>
 
-            <a href="campaign-admin.html" class="admin-menu-card">
-                <h3> Pengurusan Kempen</h3>
-                <p>Semak semua kempen yang dihantar oleh pemohon.</p>
-            </a>
+                <div class="card">
+                    <div class="card-header-top">
+                        <span>Jumlah Kempen</span>
+                        <span class="card-dot">📢</span>
+                    </div>
+                    <h2 id="totalCampaigns">0</h2>
+                    <p class="card-trend">Aktif disiarkan</p>
+                </div>
 
-            <a href="list-approval.html" class="admin-menu-card">
-                <h3> Pengesahan Kempen</h3>
-                <p>Luluskan atau tolak kempen yang menunggu semakan.</p>
-            </a>
+                <div class="card">
+                    <div class="card-header-top">
+                        <span>Menunggu Semakan</span>
+                        <span class="card-dot">⏳</span>
+                    </div>
+                    <h2 id="pendingCampaigns">0</h2>
+                    <p class="card-trend warning">Perlukan tindakan</p>
+                </div>
 
-            <a href="list-report.html" class="admin-menu-card">
-                <h3> Laporan</h3>
-                <p>Pantau jumlah sumbangan keseluruhan, mingguan dan bulanan.</p>
-            </a>
+                <div class="card highlight-card">
+                    <div class="card-header-top">
+                        <span>Jumlah Sumbangan</span>
+                        <span class="card-dot">💰</span>
+                    </div>
+                    <h2 id="totalDonation">RM 0</h2>
+                    <a href="list-report.html" class="card-btn">Lihat Laporan</a>
+                </div>
 
-        </section>
+            </section>
 
-    </main>
+            <section class="section-block">
+                <h3>Pintasan Pengurusan Pantas</h3>
+                <div class="shortcut-grid">
+                    <a href="list-user.html" class="shortcut-item">
+                        <span class="shortcut-icon">👥</span>
+                        <div>
+                            <h4>Pengurusan Pengguna</h4>
+                            <p>Semak akaun dan status</p>
+                        </div>
+                    </a>
+                    <a href="campaign-admin.html" class="shortcut-item">
+                        <span class="shortcut-icon">📢</span>
+                        <div>
+                            <h4>Senarai Kempen</h4>
+                            <p>Pantau kempen aktif</p>
+                        </div>
+                    </a>
+                    <a href="list-approval.html" class="shortcut-item">
+                        <span class="shortcut-icon">✅</span>
+                        <div>
+                            <h4>Pengesahan Kempen</h4>
+                            <p>Luluskan permohonan baru</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
 
-    <footer>
-        <p>© 2026 Derma360 | Panel Pentadbir</p>
-    </footer>
+        </main>
+    </div>
 
     <script type="module" src="js/admin.js"></script>
-    
-     <script src="js/accessibility.js"></script> 
-    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
-        ♿
-    </button>
-    
+    <script src="js/accessibility.js"></script>
+    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">♿</button>
     <div id="a11y-panel-slot"></div>
-    
-    <!-- VOICE COMMAND BUTTON -->
-    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
-        🎤
-    </button>
-    
+
+    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">🎤</button>
     <p id="voiceStatus"></p>
-    
     <script src="js/voice-command.js"></script>
 </body>
 

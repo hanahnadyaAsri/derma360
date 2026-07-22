@@ -5,53 +5,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senarai Pengguna | Derma360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Gaya Tambahan untuk Modal Edit Pengguna & Carian (Selaras Layout Dashboard) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--card-bg, #ffffff);
+            padding: 30px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: var(--primary-green, #0D5C3C);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color, #E5E7EB);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary-green, #0D5C3C);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn-save {
+            background: var(--primary-green, #0D5C3C);
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #07472d;
+        }
+
+        .btn-cancel {
+            background: #FEF2F2;
+            color: #DC2626;
+            border: 1px solid #FCA5A5;
+        }
+
+        .btn-cancel:hover {
+            background: #FEE2E2;
+        }
+
+        .btn-delete {
+            background: #DC2626;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .clickable-name {
+            color: var(--primary-green, #0D5C3C);
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .clickable-name:hover {
+            color: #07472d;
+        }
+
+        .modal-profile-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-profile-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--primary-green, #0D5C3C);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Kotak Carian Khas */
+        .search-box {
+            margin: 0 0 20px 0;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color, #E5E7EB);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            background: #ffffff;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary-green, #0D5C3C);
+        }
+    </style>
 </head>
 
 <body>
 
-    <header class="navbar">
-        <div class="logo">
-            <h2>Derma360 Admin</h2>
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="images/logo_d360.png" alt="Derma360 Logo">
+                <span>Derma360</span>
+            </div>
+
+            <div class="sidebar-menu-category">MENU UTAMA</div>
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html">
+                    <span class="icon">📊</span> Papan Pemuka
+                </a>
+                <a href="list-user.html" class="active">
+                    <span class="icon">👥</span> Pengguna
+                </a>
+                <a href="campaign-admin.html">
+                    <span class="icon">📢</span> Kempen
+                </a>
+                <a href="list-approval.html">
+                    <span class="icon">⏳</span> Pengesahan
+                </a>
+                <a href="list-report.html">
+                    <span class="icon">📈</span> Laporan
+                </a>
+            </nav>
+
+            <div class="sidebar-menu-category">TETAPAN</div>
+            <nav class="sidebar-nav">
+                <button id="logoutBtn" class="sidebar-logout">
+                    <span class="icon">🚪</span> Log Keluar
+                </button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Senarai Pengguna</h1>
+                    <p>Senarai semua pengguna berdaftar dalam sistem Derma360. Klik pada nama untuk menyunting.</p>
+                </div>
+                <div class="header-profile">
+                    <span class="notification-badge">🔔</span>
+                    <div class="profile-pic">A</div>
+                </div>
+            </header>
+
+            <section class="table-container">
+                <input type="text" id="searchInput" class="search-box" placeholder="Cari nama pengguna...">
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="userTable">
+                        <thead>
+                            <tr>
+                                <th>Nama (Klik untuk Edit)</th>
+                                <th>E-mel</th>
+                                <th>Telefon</th>
+                                <th>Status</th>
+                                <th style="text-align: center;">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userList">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 20px; color: var(--text-muted);">
+                                    Sedang memuatkan pengguna...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Sunting Maklumat Pengguna</h3>
+
+            <div class="modal-profile-container">
+                <img id="editProfileImg" src="" alt="Gambar Profil Pengguna" class="modal-profile-img">
+            </div>
+
+            <form id="editUserForm">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label for="editName">Nama Penuh</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">E-mel</label>
+                    <input type="email" id="editEmail" readonly style="background: #F3F4F6; cursor: not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Nombor Telefon</label>
+                    <input type="text" id="editPhone">
+                </div>
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus">
+                        <option value="Aktif">Aktif</option>
+                        <option value="Tidak Aktif">Tidak Aktif</option>
+                        <option value="Digantung">Digantung</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-action btn-cancel" id="closeModalBtn">Batal</button>
+                    <button type="submit" class="btn-action btn-save">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
-        <nav>
-            <a href="admin-dashboard.html">Papan Pemuka</a>
-            <a href="list-user.html">Pengguna</a>
-            <a href="campaign-admin.html">Kempen</a>
-            <a href="list-approval.html">Pengesahan</a>
-            <a href="list-report.html">Laporan</a>
-            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
-            
+    </div>
 
-        </nav>
-    </header>
-
-    <main class="auth-container">
-        <h1>Senarai Pengguna</h1>
-        <p>Senarai semua pengguna berdaftar dalam sistem Derma360.</p>
-
-        <div id="userList">
-            <p>Sedang memuatkan pengguna...</p>
-        </div>
-    </main>
     <script type="module" src="js/list-user.js"></script>
-    <script type="module" src="js/admin.js"></script>   
-
-    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
-        ♿
-    </button>
-    
-    <div id="a11y-panel-slot"></div>
-    
-    <!-- VOICE COMMAND BUTTON -->
-    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
-        🎤
-    </button>
-    
-    <p id="voiceStatus"></p>
-    
+    <script type="module" src="js/admin.js"></script>
     <script src="js/accessibility.js"></script>
-    <script src="js/voice-command.js"></script>
+    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">♿</button>
+    <div id="a11y-panel-slot"></div>
 </body>
 
 </html>

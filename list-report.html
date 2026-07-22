@@ -5,74 +5,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Kewangan | Derma360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0/dist/chartjs-plugin-zoom.min.js"></script>
 </head>
 
 <body>
 
-    <header class="navbar">
-        <div class="logo">
-            <h2>Derma360 Admin</h2>
-        </div>
-        <nav>
-            <a href="admin-dashboard.html">Papan Pemuka</a>
-            <a href="list-user.html">Pengguna</a>
-            <a href="campaign-admin.html">Kempen</a>
-            <a href="list-approval.html">Pengesahan</a>
-            <a href="list-report.html">Laporan</a>
-            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
-                    
+    <div class="app-layout">
 
-
-        </nav>
-    </header>
-
-    
-
-    <main class="auth-container">
-        <h1>Laporan Kewangan</h1>
-        <p>Ringkasan sumbangan keseluruhan, mingguan, bulanan dan mengikut kempen.</p>
-
-        <div class="info-grid">
-            <div class="info-card">
-                <h3>Jumlah Keseluruhan</h3>
-                <h2 id="totalDonation">RM 0</h2>
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="images/logo_d360.png" alt="Derma360 Logo">
+                <span>Derma360</span>
             </div>
 
-            <div class="info-card">
-                <h3>Minggu Ini</h3>
-                <h2 id="weeklyDonation">RM 0</h2>
-            </div>
+            <div class="sidebar-menu-category">MENU UTAMA</div>
+            <nav class="sidebar-nav">
+                <a href="admin-dashboard.html">
+                    <span class="icon">📊</span> Papan Pemuka
+                </a>
+                <a href="list-user.html">
+                    <span class="icon">👥</span> Pengguna
+                </a>
+                <a href="campaign-admin.html">
+                    <span class="icon">📢</span> Kempen
+                </a>
+                <a href="list-approval.html">
+                    <span class="icon">⏳</span> Pengesahan
+                </a>
+                <a href="list-report.html" class="active">
+                    <span class="icon">📈</span> Laporan
+                </a>
+            </nav>
 
-            <div class="info-card">
-                <h3>Bulan Ini</h3>
-                <h2 id="monthlyDonation">RM 0</h2>
-            </div>
-        </div>
+            <div class="sidebar-menu-category">TETAPAN</div>
+            <nav class="sidebar-nav">
+                <button id="logoutBtn" class="sidebar-logout">
+                    <span class="icon">🚪</span> Log Keluar
+                </button>
+            </nav>
+        </aside>
 
-        <h2>Laporan Mengikut Kempen</h2>
+        <main class="main-content">
 
-        <div id="campaignReportList">
-            <p>Sedang memuatkan laporan...</p>
-        </div>
-    </main>
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Laporan Kewangan</h1>
+                    <p>Ringkasan sumbangan keseluruhan, mingguan, bulanan, tahunan dan graf terperinci.</p>
+                </div>
+                <div class="header-profile">
+                    <span class="notification-badge">🔔</span>
+                    <div class="profile-pic">A</div>
+                </div>
+            </header>
+
+            <section class="analytics-cards">
+                <div class="card highlight-card">
+                    <div class="card-header-top">
+                        <span>Jumlah Keseluruhan</span>
+                        <span class="card-dot">💰</span>
+                    </div>
+                    <h2 id="totalDonation">RM 0</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header-top">
+                        <span>Minggu Ini</span>
+                        <span class="card-dot">📅</span>
+                    </div>
+                    <h2 id="weeklyDonation">RM 0</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header-top">
+                        <span>Bulan Ini</span>
+                        <span class="card-dot">📈</span>
+                    </div>
+                    <h2 id="monthlyDonation">RM 0</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header-top">
+                        <span>Tahun Ini</span>
+                        <span class="card-dot">🏆</span>
+                    </div>
+                    <h2 id="yearlyDonation">RM 0</h2>
+                </div>
+            </section>
+
+            <section class="table-container">
+                <h3 style="margin-bottom: 5px;">Graf Kutipan Mingguan</h3>
+                <div style="position: relative; height: 260px; width: 100%;">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+                <div
+                    style="margin-top: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--border-color);">
+                    <label for="weekPickerInput" style="font-weight: 600; font-size: 0.9rem;">Pilih Minggu:</label>
+                    <input type="week" id="weekPickerInput" class="form-control"
+                        style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.9rem; outline: none;">
+                </div>
+            </section>
+
+            <section class="table-container">
+                <h3 id="monthlyChartTitle" style="margin-bottom: 5px;">Graf Kutipan Bulanan Mengikut Kempen</h3>
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+                <div
+                    style="margin-top: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--border-color);">
+                    <label for="reportMonth" style="font-weight: 600; font-size: 0.9rem;">Pilih Bulan Laporan:</label>
+                    <input type="month" id="reportMonth" class="form-control"
+                        style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.9rem; outline: none;">
+                    <button id="downloadMonthlyBtn" class="btn-detail"
+                        style="cursor: pointer; background: var(--primary-green, #0D5C3C); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600;">Muat
+                        Turun Laporan Bulanan (CSV)</button>
+                </div>
+            </section>
+
+            <section class="table-container">
+                <h3 id="yearlyChartTitle" style="margin-bottom: 5px;">Graf Kutipan Tahunan Mengikut Kempen</h3>
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="yearlyChart"></canvas>
+                </div>
+                <div
+                    style="margin-top: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--border-color);">
+                    <label for="reportYear" style="font-weight: 600; font-size: 0.9rem;">Pilih Tahun Laporan:</label>
+                    <select id="reportYear" class="form-control"
+                        style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.9rem; outline: none;"></select>
+                    <button id="downloadYearlyBtn" class="btn-detail"
+                        style="cursor: pointer; background: var(--primary-green, #0D5C3C); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600;">Muat
+                        Turun Laporan Tahunan (CSV)</button>
+                </div>
+            </section>
+
+            <section class="table-container">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <h3>Laporan Mengikut Kempen</h3>
+                    <input type="text" id="searchCampaignInput" class="search-box" placeholder="Cari nama kempen..."
+                        style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none;">
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="campaignTable">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Nama Kempen</th>
+                                <th style="text-align: right;">Jumlah Kutipan (RM)</th>
+                                <th style="text-align: right;">Sasaran Dana (RM)</th>
+                                <th style="text-align: center;">Peratus (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="campaignReportList">
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 20px; color: var(--text-muted);">
+                                    Sedang memuatkan laporan...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
 
     <script type="module" src="js/list-report.js"></script>
     <script type="module" src="js/admin.js"></script>
-
-    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
-        ♿
-    </button>
-    
+    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">♿</button>
     <div id="a11y-panel-slot"></div>
-    
-    <!-- VOICE COMMAND BUTTON -->
-    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
-        🎤
-    </button>
-    
+    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">🎤</button>
     <p id="voiceStatus"></p>
-    
     <script src="js/accessibility.js"></script>
     <script src="js/voice-command.js"></script>
 </body>
