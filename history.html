@@ -13,7 +13,8 @@
     <header class="navbar">
         <div class="logo">
             <a href="index.html">
-                <img src="images/logo_d360.png" alt="Derma360 Logo">
+                <img src="images/logo_d360.png" alt="Derma360 Logo"
+                    style="height: 48px; width: auto; object-fit: contain;">
             </a>
         </div>
 
@@ -21,42 +22,42 @@
             <a href="donor-dashboard.html">Papan Pemuka</a>
             <a href="campaign.html">Kempen</a>
             <a href="profile.html">Profil Saya</a>
-            <button id="logoutBtn" class="nav-logout">Log Keluar
-
-            </button>
-                    
-
+            <button id="logoutBtn" class="nav-logout" style="border: none; cursor: pointer;">Log Keluar</button>
         </nav>
     </header>
 
-    
+    <main class="auth-container" style="max-width: 900px; padding: 40px;">
 
-    <main class="auth-container">
-        <h1>Sejarah Sumbangan</h1>
-        <p>Senarai sumbangan yang telah anda lakukan.</p>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="margin-bottom: 8px;">Sejarah Sumbangan</h1>
+            <p style="color: var(--muted); font-size: 1rem;">
+                Semak senarai rekod sumbangan kewangan yang telah anda salurkan kepada kempen.
+            </p>
+        </div>
 
         <div id="historyList">
-            <p>Sedang memuatkan sejarah sumbangan...</p>
+            <div style="text-align: center; padding: 30px; color: var(--muted);">
+                <p>Sedang memuatkan sejarah sumbangan...</p>
+            </div>
         </div>
+
     </main>
 
     <script type="module" src="js/app.js"></script>
     <script type="module" src="js/history.js"></script>
 
-    
     <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
         ♿
     </button>
-    
+
     <div id="a11y-panel-slot"></div>
-    
-    <!-- VOICE COMMAND BUTTON -->
+
     <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
         🎤
     </button>
-    
+
     <p id="voiceStatus"></p>
-    
+
     <script src="js/accessibility.js"></script>
     <script src="js/voice-command.js"></script>
 </body>

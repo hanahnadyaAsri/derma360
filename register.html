@@ -10,23 +10,38 @@
 
 <body>
 
-
     <div class="auth-container">
-        <h1>Daftar Pengguna</h1>
-        <p>Muat naik dokumen untuk pengesahan OCR, kemudian semak dan sahkan maklumat anda.</p>
+
+        <div class="auth-header" style="text-align: center; margin-bottom: 25px;">
+            <h1>Daftar Pengguna</h1>
+            <p style="color: var(--muted); font-size: 0.95rem; margin-top: 8px;">
+                Muat naik dokumen untuk pengesahan OCR, kemudian semak dan sahkan maklumat anda.
+            </p>
+        </div>
 
         <form id="registerForm">
 
-            <label>Muat Naik MyKad / Kad OKU / Dokumen NGO</label>
-            <input type="file" id="documentUpload" accept="image/*">
+            <div class="ocr-section-box"
+                style="background: var(--bg); padding: 20px; border-radius: 12px; border: 1px dashed var(--border); margin-bottom: 20px;">
+                <label for="documentUpload"
+                    style="font-weight: 600; display: block; margin-bottom: 8px; color: var(--primary);">
+                    Muat Naik MyKad / Kad OKU / Dokumen NGO
+                </label>
+                <input type="file" id="documentUpload" accept="image/*"
+                    style="background: #ffffff; border: 1px solid var(--border); padding: 10px;">
 
-            <button type="button" id="ocrBtn">Ekstrak Maklumat dengan OCR</button>
+                <button type="button" id="ocrBtn"
+                    style="margin-top: 12px; background: var(--accent); min-height: 48px;">
+                    Ekstrak Maklumat dengan OCR
+                </button>
 
-            <p id="ocrStatus"></p>
+                <p id="ocrStatus" style="font-size: 0.9rem; margin-top: 8px; font-weight: 500;"></p>
+            </div>
 
-            <input type="text" id="name" placeholder="Nama Penuh" required>
-
-            <input type="text" id="ic_number" placeholder="Nombor Kad Pengenalan" required>
+            <div class="form-group-grid">
+                <input type="text" id="name" placeholder="Nama Penuh" required>
+                <input type="text" id_number="ic_number" id="ic_number" placeholder="Nombor Kad Pengenalan" required>
+            </div>
 
             <textarea id="address" placeholder="Alamat yang diekstrak daripada dokumen"></textarea>
 
@@ -44,37 +59,41 @@
 
             <input type="text" id="phone" placeholder="Nombor Telefon" required>
 
-            <input type="text" id="pwd_card_number" placeholder="Nombor Kad OKU (Pilihan)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <input type="text" id="pwd_card_number" placeholder="Nombor Kad OKU (Pilihan)">
+                <input type="text" id="disability_category" placeholder="Kategori Ketidakupayaan (Pilihan)">
+            </div>
 
-            <input type="text" id="disability_category" placeholder="Kategori Ketidakupayaan (Pilihan)">
-
-            <button type="submit">Daftar</button>
+            <button type="submit" style="margin-top: 15px; font-size: 1.05rem;">Daftar Akaun</button>
 
         </form>
 
-        <p>Sudah mempunyai akaun? <a href="login.html">Log masuk di sini</a></p>
-        <p id="message"></p>
+        <div style="text-align: center; margin-top: 20px;">
+            <p style="font-size: 0.95rem;">Sudah mempunyai akaun? <a href="login.html"
+                    style="color: var(--primary);">Log masuk di sini</a></p>
+        </div>
+
+        <p id="message" style="text-align: center; font-weight: 600; margin-top: 15px;"></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="js/ocr-handler.js"></script>
     <script type="module" src="js/register.js"></script>
 
-<button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
-    ♿
-</button>
+    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
+        ♿
+    </button>
 
-<div id="a11y-panel-slot"></div>
+    <div id="a11y-panel-slot"></div>
 
-<!-- VOICE COMMAND BUTTON -->
-<button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
-    🎤
-</button>
+    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
+        🎤
+    </button>
 
-<p id="voiceStatus"></p>
+    <p id="voiceStatus"></p>
 
-<script src="js/accessibility.js"></script>
-<script src="js/voice-command.js"></script>
+    <script src="js/accessibility.js"></script>
+    <script src="js/voice-command.js"></script>
 </body>
 
 </html>
