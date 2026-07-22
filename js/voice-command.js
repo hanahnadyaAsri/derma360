@@ -5,94 +5,206 @@ const voiceBtn = document.getElementById("voiceBtn");
 const voiceStatus = document.getElementById("voiceStatus");
 
 const pages = [
-    {
-        url: "index.html",
-        keywords: ["laman utama", "home", "utama", "index"]
-    },
-    {
-        url: "campaign.html",
-        keywords: ["kempen", "campaign", "senarai kempen", "lihat kempen"]
-    },
-    {
-        url: "choose-mode.html",
-        keywords: ["pilih mod", "choose mode", "mode", "pilihan"]
-    },
-    {
-        url: "login.html",
-        keywords: ["log masuk", "login", "masuk akaun"]
-    },
-    {
-        url: "register.html",
-        keywords: ["daftar", "register", "cipta akaun"]
-    },
-    {
-        url: "forgot-password.html",
-        keywords: ["lupa kata laluan", "forgot password", "reset password"]
-    },
-    {
-        url: "profile.html",
-        keywords: ["profil", "profile", "akaun saya"]
-    },
-    {
-        url: "donation.html",
-        keywords: ["sumbangan", "donation", "derma"]
-    },
-    {
-        url: "receipt.html",
-        keywords: ["resit", "receipt"]
-    },
-    {
-        url: "history.html",
-        keywords: ["sejarah", "history", "sejarah sumbangan"]
-    },
-    {
-        url: "success.html",
-        keywords: ["berjaya", "success"]
-    },
+
+    // 1. Letakkan halaman spesifik / bertindih di atas
     {
         url: "create-campaign.html",
-        keywords: ["cipta kempen", "mohon bantuan", "buat kempen", "create campaign"]
+        keywords: [
+            "cipta kempen",
+            "buat kempen",
+            "mohon bantuan",
+            "permohonan bantuan",
+            "permohonan kempen",
+            "create campaign"
+        ]
     },
+
     {
         url: "edit-campaign.html",
-        keywords: ["edit kempen", "ubah kempen", "kemaskini kempen"]
+        keywords: [
+            "edit kempen",
+            "ubah kempen",
+            "kemaskini kempen",
+            "update kempen"
+        ]
     },
+
     {
         url: "my-campaign.html",
-        keywords: ["kempen saya", "my campaign", "kempen sendiri"]
+        keywords: [
+            "kempen saya",
+            "kempen milik saya",
+            "my campaign"
+        ]
     },
+
     {
         url: "list-campaign.html",
-        keywords: ["senarai campaign", "senarai semua kempen", "list campaign"]
+        keywords: [
+            "senarai kempen pentadbir",
+            "list kempen",
+            "list campaign"
+        ]
     },
+
+    {
+        url: "campaign.html",
+        keywords: [
+            "kempen",
+            "senarai kempen",
+            "lihat kempen",
+            "buka kempen",
+            "halaman kempen",
+            "campaign"
+        ]
+    },
+
+    // 2. Senarai halaman lain kekal di bawah atau disusun mengikut keperluan
+    {
+        url: "index.html",
+        keywords: [
+            "laman utama",
+            "utama",
+            "home",
+            "halaman utama",
+            "pergi laman utama",
+            "buka laman utama"
+        ]
+    },
+
+    {
+        url: "choose-mode.html",
+        keywords: [
+            "pilih mod",
+            "pilihan mod",
+            "choose mode",
+            "mode",
+            "pilih peranan"
+        ]
+    },
+
+    {
+        url: "login.html",
+        keywords: [
+            "log masuk",
+            "login",
+            "masuk",
+            "masuk akaun",
+            "halaman log masuk"
+        ]
+    },
+
+    {
+        url: "register.html",
+        keywords: [
+            "daftar",
+            "register",
+            "cipta akaun",
+            "pendaftaran",
+            "halaman daftar"
+        ]
+    },
+
+    {
+        url: "forgot-password.html",
+        keywords: [
+            "lupa kata laluan",
+            "reset kata laluan",
+            "lupa password",
+            "forgot password"
+        ]
+    },
+
+    {
+        url: "profile.html",
+        keywords: [
+            "profil",
+            "profil saya",
+            "akaun saya",
+            "profile"
+        ]
+    },
+
+    {
+        url: "donation.html",
+        keywords: [
+            "sumbangan",
+            "buat sumbangan",
+            "derma",
+            "donation",
+            "halaman sumbangan"
+        ]
+    },
+
+    {
+        url: "history.html",
+        keywords: [
+            "sejarah",
+            "rekod",
+            "history"
+        ]
+    },
+
     {
         url: "list-approval.html",
-        keywords: ["senarai kelulusan", "approval", "list approval", "kelulusan"]
+        keywords: [
+            "kelulusan",
+            "pengesahan kempen",
+            "senarai kelulusan",
+            "approval"
+        ]
     },
+
     {
         url: "list-report.html",
-        keywords: ["senarai laporan", "laporan", "report", "list report"]
+        keywords: [
+            "laporan",
+            "senarai laporan",
+            "report"
+        ]
     },
+
     {
         url: "list-user.html",
-        keywords: ["senarai pengguna", "pengguna", "user", "list user"]
+        keywords: [
+            "pengguna",
+            "senarai pengguna",
+            "user"
+        ]
     },
+
     {
         url: "admin-dashboard.html",
-        keywords: ["admin", "pentadbir", "dashboard admin"]
+        keywords: [
+            "dashboard pentadbir",
+            "dashboard admin",
+            "admin",
+            "pentadbir",
+            "papan pemuka pentadbir"
+        ]
     },
+
     {
         url: "applicant-dashboard.html",
-        keywords: ["dashboard pemohon", "pemohon", "applicant dashboard"]
+        keywords: [
+            "dashboard pemohon",
+            "pemohon",
+            "papan pemuka pemohon",
+            "dashboard bantuan"
+        ]
     },
+
     {
         url: "donor-dashboard.html",
-        keywords: ["dashboard penderma", "penderma", "donor dashboard"]
-    },
-    {
-        url: "404.html",
-        keywords: ["error", "halaman tidak dijumpai", "404"]
+        keywords: [
+            "dashboard penderma",
+            "dashboard penyumbang",
+            "penderma",
+            "penyumbang",
+            "papan pemuka penderma"
+        ]
     }
+
 ];
 
 if (!SpeechRecognition) {
@@ -149,16 +261,46 @@ function runVoiceCommand(command) {
             location.reload();
         }, 600);
         return;
+
+    }
+    if (has(command, ["log keluar","logout","keluar akaun","sign out"])) {
+
+        showVoiceStatus("Sedang log keluar...");
+
+        setTimeout(() => {
+
+            const logoutBtn = document.getElementById("logoutBtn");
+
+            if (logoutBtn) {
+                logoutBtn.click();
+            } else {
+                showVoiceStatus("Butang log keluar tidak ditemui.");
+            }
+
+        }, 600);
+
+        return;
     }
 
-    const matchedPage = pages.find(page => has(command, page.keywords));
+    const matchedPage = pages.find(page =>
+        page.keywords.some(keyword => command.includes(keyword))
+    );
 
     if (matchedPage) {
-        goTo(matchedPage.url, "Membuka " + matchedPage.url + "...");
-    } else {
-        showVoiceStatus(
-            "Arahan tidak dikenali. Cuba sebut: Laman Utama, Kempen, Profil, Daftar, Admin, atau Dashboard."
+
+        const pageName = matchedPage.keywords[0];
+
+        goTo(
+            matchedPage.url,
+            "Membuka " + pageName + "..."
         );
+
+    } else {
+
+        showVoiceStatus(
+            "Arahan tidak dikenali. Cuba sebut: Laman Utama, Kempen, Profil, Daftar, Dashboard atau Sejarah."
+        );
+
         hideVoiceStatusLater();
     }
 }
