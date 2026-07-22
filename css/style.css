@@ -1428,35 +1428,7 @@ body {
     flex-wrap: wrap;
 }
 
-.primary-btn {
-    background-color: #ff7518;
-    color: #ffffff;
-    border: none;
-    padding: 0.85rem 2rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-.primary-btn:hover {
-    background-color: #e06512;
-    transform: translateY(-1px);
-}
-
-.secondary-btn {
-    background-color: transparent;
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    padding: 0.85rem 2rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-}
-
+.
 .secondary-btn:hover {
     background-color: #ffffff;
     color: #0b6653;
