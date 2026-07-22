@@ -369,6 +369,110 @@ th {
     color: #ffffff;
 }
 
+/* Campaign Admin */
+.campaign-admin-page {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.campaign-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.campaign-table {
+    margin-top: 0;
+}
+
+.campaign-table th,
+.campaign-table td {
+    vertical-align: top;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    color: #ffffff;
+    background: var(--muted);
+}
+
+.status-badge.active {
+    background: #2e7d32;
+}
+
+.status-badge.inactive {
+    background: var(--accent);
+}
+
+.btn-detail {
+    width: auto;
+    min-height: auto;
+    padding: 10px 14px;
+    background: var(--accent);
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.btn-detail:hover {
+    background: var(--accent-dark);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.modal-content {
+    background: #ffffff;
+    margin: 5% auto;
+    padding: 24px;
+    border-radius: 16px;
+    width: min(92%, 680px);
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+}
+
+.close-btn {
+    float: right;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+    line-height: 20px;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+#modalBody p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+#modalBody img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+#modalBody hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 12px 0;
+}
+
 /* Admin */
 .admin-container {
     width: 92%;

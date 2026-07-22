@@ -37,13 +37,14 @@ const pages = [
             "my campaign"
         ]
     },
+    
 
     {
-        url: "list-campaign.html",
+        url: "campaign-admin.html",
         keywords: [
-            "senarai kempen pentadbir",
-            "list kempen",
-            "list campaign"
+            "kempen pentadbir",
+            "campaign admin",
+            "list admin"
         ]
     },
 
@@ -149,7 +150,7 @@ const pages = [
         url: "list-approval.html",
         keywords: [
             "kelulusan",
-            "pengesahan kempen",
+            "pengesahan",
             "senarai kelulusan",
             "approval"
         ]

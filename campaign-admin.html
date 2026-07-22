@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senarai Kempen Keseluruhan | Derma360</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Gaya tambahan khusus untuk jadual dan modal paparan butiran kempen */
+    
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .btn-detail {
+            background-color: #ff7f00;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-detail:hover {
+            background-color: #e57000;
+        }
+
+        /* Modal / Kotak Butiran */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 24px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 26px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+            line-height: 20px;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        #modalBody p {
+            margin: 8px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <h2>Derma360 Admin</h2>
+        </div>
+        <nav>
+            <a href="admin-dashboard.html">Papan Pemuka</a>
+            <a href="list-user.html">Pengguna</a>
+            <a href="campaign-admin.html">Kempen</a>
+            <a href="list-approval.html">Pengesahan</a>
+            <a href="list-report.html">Laporan</a>
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
+        </nav>
+    </header>
+
+    <main class="auth-container campaign-admin-page">
+        <h1>Senarai Keseluruhan Kempen</h1>
+        <p>Semak semua maklumat kempen yang aktif atau berdaftar di dalam sistem Derma360.</p>
+
+        <div id="loadingStatus">Sedang memuatkan senarai kempen...</div>
+
+        <div class="campaign-table-wrapper">
+            <table id="campaignTable" class="campaign-table" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Nama Kempen</th>
+                        <th>Kategori</th>
+                        <th>Nama Pemohon / Penerima</th>
+                        <th>Tarikh Tamat</th>
+                        <th>Dana Terkumpul</th>
+                        <th>Status</th>
+                        <th>Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="campaignTableBody">
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+            </div>
+        </div>
+    </div>
+
+    <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
+        ♿
+    </button>
+
+    <div id="a11y-panel-slot"></div>
+
+    <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
+        🎤
+    </button>
+
+    <p id="voiceStatus"></p>
+
+    <script type="module" src="js/campaign-admin.js"></script>
+    <script type="module" src="js/admin.js"></script>
+    <script src="js/accessibility.js"></script>
+    <script src="js/voice-command.js"></script>
+</body>
+
+</html>
