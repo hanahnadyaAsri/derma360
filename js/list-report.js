@@ -184,7 +184,7 @@ function processAndDisplayReports(donations, campaigns) {
 
     donations.forEach((donation) => {
         const status = (donation.paymentStatus || "").toLowerCase();
-        if (status !== "success" && status !== "paid" && status !== "paid demo") return;
+        if (status !== "Selesai" && status !== "selesai") return;
 
         const amount = Number(donation.amount || 0);
         const campaignId = donation.campaignId;
