@@ -64,7 +64,7 @@ async function loadFeaturedCampaigns() {
                 <h3>${campaign.campaignTitle}</h3>
                 <p>${campaign.description.substring(0, 120)}...</p>
 
-                <p><strong>RM ${campaign.currentAmount}</strong> raised of RM ${campaign.targetAmount}</p>
+                <p><strong>RM ${campaign.currentAmount}</strong> dari RM ${campaign.targetAmount}</p>
 
                 <div class="progress-bar">
                     <div class="progress-fill" style="width:${percentage}%"></div>
