@@ -77,7 +77,7 @@ const pages = [
         url: "choose-mode.html",
         keywords: [
             "mod",
-            "mod pengguna",
+            "peranan",
             "choose mode",
             "mode",
             "pilih peranan"
