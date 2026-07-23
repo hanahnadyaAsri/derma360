@@ -5,7 +5,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cipta Kempen | Derma360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Sentuhan estetika tambahan tanpa mengubah saiz atau lebar asal kontena */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .auth-container h1 {
+            color: var(--primary-green, #0D5C3C);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .auth-container>p {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        #campaignForm label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1e293b;
+            margin-top: 15px;
+            margin-bottom: 6px;
+        }
+
+        #campaignForm input[type="text"],
+        #campaignForm input[type="number"],
+        #campaignForm input[type="date"],
+        #campaignForm select,
+        #campaignForm textarea {
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background-color: #f8fafc;
+        }
+
+        #campaignForm input:focus,
+        #campaignForm select:focus,
+        #campaignForm textarea:focus {
+            border-color: var(--primary-green, #0D5C3C);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(13, 92, 60, 0.12);
+            outline: none;
+        }
+
+        #campaignForm textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        #campaignForm input[type="file"] {
+            padding: 10px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .poster-preview {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            margin-top: 8px;
+            background: #f1f5f9;
+        }
+
+        #campaignForm button[type="submit"] {
+            background-color: var(--primary-green, #0D5C3C);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: background-color 0.2s;
+        }
+
+        #campaignForm button[type="submit"]:hover {
+            background-color: #09472e;
+        }
+
+        .auth-container p a {
+            color: var(--primary-green, #0D5C3C);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-container p a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,14 +120,9 @@
             <a href="applicant-dashboard.html">Papan Pemuka</a>
             <a href="my-campaign.html">Kempen Saya</a>
             <a href="profile.html">Profil Saya</a>
-            <button id="logoutBtn" class="nav-logout">Log Keluar
-                
-            </button>
-        
-
+            <button id="logoutBtn" class="nav-logout">Log Keluar</button>
         </nav>
     </header>
-
 
     <main class="auth-container">
         <h1>Cipta Kempen Bantuan</h1>
@@ -38,34 +131,57 @@
         <form id="campaignForm">
 
             <label for="campaignTitle">Tajuk Kempen *</label>
-            <input type="text" id="campaignTitle" maxlength="100" required>
+            <input type="text" id="campaignTitle" placeholder="Cth: Bantuan Mesin Dialisis" maxlength="100" required>
+<label for="campaignCategory">Kategori Kempen *</label>
+<select id="campaignCategory" required>
+    <option value="">Pilih Kategori</option>
+    <option value="Medical">Perubatan</option>
+    <option value="Food">Makanan</option>
+    <option value="Equipment">Peralatan/Mesin</option>
+    <option value="Rawatan Khas OKU">Rawatan Khas OKU</option>
+    <option value="Disaster">Bencana Alam</option>
+    <option value="Charity">Kebajikan</option>
+    <option value="Community Support">Bantuan Komuniti Sekitar</option>
+    <option value="Lain-lain">Lain-lain</option>
+</select>
 
-            <label for="campaignCategory">Kategori Kempen *</label>
-            <select id="campaignCategory" required>
-                <option value="">Pilih Kategori</option>
-                <option value="Medical">Perubatan</option>
-                <option value="Food">Makanan</option>
-                <option value="Equipment">Peralatan/Mesin</option>
-                <option value="Rawatan Khas OKU">Rawatan Khas OKU</option>
-                <option value="Disaster">Bencana Alam</option>
-                <option value="Charity">Kebajikan</option>
-                <option value="Community Support">Bantuan Komuniti Sekitar</option>
-            </select>
+<div id="otherCategoryWrapper" style="display: none; margin-top: 10px;">
+    <label for="otherCategoryInput">Sila Nyatakan Kategori Lain *</label>
+    <input type="text" id="otherCategoryInput" placeholder="Cth: Bantuan Sukan / Pendidikan">
+</div>
+
+<script>
+    const categorySelect = document.getElementById('campaignCategory');
+    const otherWrapper = document.getElementById('otherCategoryWrapper');
+    const otherInput = document.getElementById('otherCategoryInput');
+
+    categorySelect.addEventListener('change', function () {
+        if (this.value === 'Lain-lain') {
+            otherWrapper.style.display = 'block';
+            otherInput.required = true;
+        } else {
+            otherWrapper.style.display = 'none';
+            otherInput.required = false;
+            otherInput.value = '';
+        }
+    });
+</script>
 
             <label for="targetAmount">Sasaran Dana (RM) *</label>
-            <input type="number" id="targetAmount" min="1" required>
+            <input type="number" id="targetAmount" placeholder="Cth: 5000" min="1" required>
 
             <label for="endDate">Tarikh Tamat Kempen *</label>
             <input type="date" id="endDate" required>
 
             <label for="beneficiaryName">Nama Penerima Bantuan *</label>
-            <input type="text" id="beneficiaryName" required>
+            <input type="text" id="beneficiaryName" placeholder="Masukkan nama penuh penerima" required>
 
             <label for="location">Lokasi *</label>
             <input type="text" id="location" placeholder="Contoh: Kajang, Selangor" required>
 
             <label for="description">Penerangan Kempen *</label>
-            <textarea id="description" required></textarea>
+            <textarea id="description" placeholder="Berikan terperinci mengenai latar belakang kempen..."
+                required></textarea>
 
             <label for="campaignPoster">Poster Kempen *</label>
             <input type="file" id="campaignPoster" accept="image/*" required>
@@ -83,8 +199,8 @@
 
         <p id="message"></p>
 
-        <p>
-            <a href="applicant-dashboard.html">Kembali ke Papan Pemuka Pemohon</a>
+        <p style="margin-top: 20px; text-align: center;">
+            <a href="applicant-dashboard.html">← Kembali ke Papan Pemuka Pemohon</a>
         </p>
     </main>
 
@@ -94,16 +210,15 @@
     <button id="a11y-toggle" class="a11y-toggle" type="button" aria-label="Buka Mod Kebolehcapaian">
         ♿
     </button>
-    
+
     <div id="a11y-panel-slot"></div>
-    
-    <!-- VOICE COMMAND BUTTON -->
+
     <button id="voiceBtn" class="voice-btn" type="button" aria-label="Arahan Suara">
         🎤
     </button>
-    
+
     <p id="voiceStatus"></p>
-    
+
     <script src="js/accessibility.js"></script>
     <script src="js/voice-command.js"></script>
 </body>
