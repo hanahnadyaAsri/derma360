@@ -40,17 +40,21 @@ async function loadUser() {
     const userSnap = await getDoc(doc(db, "users", currentUser.uid));
 
     if (userSnap.exists()) {
-        document.getElementById("donorName").value = userSnap.data().name || "";
+        document.getElementById("donorName").value =
+            userSnap.data().name || "";
     }
 }
 
 async function loadCampaign() {
+
     if (!campaignId) {
         campaignInfo.innerHTML = "<p>Kempen tidak dijumpai.</p>";
         return;
     }
 
-    const campaignSnap = await getDoc(doc(db, "campaigns", campaignId));
+    const campaignSnap = await getDoc(
+        doc(db, "campaigns", campaignId)
+    );
 
     if (!campaignSnap.exists()) {
         campaignInfo.innerHTML = "<p>Kempen tidak dijumpai.</p>";
@@ -60,7 +64,9 @@ async function loadCampaign() {
     campaignData = campaignSnap.data();
 
     campaignInfo.innerHTML = `
-        <img src="${campaignData.mediaUrl}" class="campaign-img" alt="Poster Kempen">
+        <img src="${campaignData.mediaUrl}" 
+             class="campaign-img" 
+             alt="Poster Kempen">
 
         <h2>${campaignData.campaignTitle}</h2>
 
@@ -77,14 +83,22 @@ async function loadCampaign() {
 }
 
 function generateReceiptNumber() {
+
     const today = new Date();
-    const dateText = today.toISOString().slice(0, 10).replaceAll("-", "");
-    const randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+    const dateText = today
+        .toISOString()
+        .slice(0, 10)
+        .replaceAll("-", "");
+
+    const randomNumber =
+        Math.floor(100000 + Math.random() * 900000);
 
     return `DERMA-${dateText}-${randomNumber}`;
 }
 
 donationForm.addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
     if (!currentUser || !campaignData) {
@@ -93,58 +107,109 @@ donationForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    const donorName = document.getElementById("donorName").value.trim();
-    const amount = Number(document.getElementById("amount").value);
-    const paymentMethod = document.getElementById("paymentMethod").value;
+    const donorName =
+        document.getElementById("donorName").value.trim();
 
-    if (amount <= 10) {
-        message.textContent = "Jumlah sumbangan tidak sah.";
+    const amount = Number(
+        document.getElementById("amount").value
+    );
+
+    // Semak jumlah
+    if (isNaN(amount) || amount < 10) {
+        message.textContent =
+            "Jumlah minimum sumbangan ialah RM10.";
         message.style.color = "red";
         return;
     }
 
+    // Semak kaedah pembayaran
+    const selectedPayment = document.querySelector(
+        'input[name="paymentMethod"]:checked'
+    );
+
+    if (!selectedPayment) {
+        message.textContent =
+            "Sila pilih kaedah pembayaran.";
+        message.style.color = "red";
+        return;
+    }
+
+    const paymentMethod = selectedPayment.value;
+
+    // Disable button
+    const submitBtn = donationForm.querySelector(
+        "button[type='submit']"
+    );
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sedang Memproses...";
+
     try {
+
         message.textContent = "Sedang memproses sumbangan...";
         message.style.color = "blue";
 
-        const transactionReference = "PAID-" + Date.now();
+        const transactionReference =
+            "PAID-" + Date.now();
 
-        const donationRef = await addDoc(collection(db, "donations"), {
-            donorId: currentUser.uid,
-            donorName,
-            campaignId,
-            campaignTitle: campaignData.campaignTitle,
-            amount,
-            paymentMethod,
-            paymentStatus: "Paid ",
-            transactionReference,
-            createdAt: serverTimestamp()
-        });
+        // Simpan Donation
+        const donationRef = await addDoc(
+            collection(db, "donations"),
+            {
+                donorId: currentUser.uid,
+                donorName,
+                campaignId,
+                campaignTitle: campaignData.campaignTitle,
+                amount,
+                paymentMethod,
+                paymentStatus: "Selesai",
+                transactionReference,
+                createdAt: serverTimestamp()
+            }
+        );
 
-        await updateDoc(doc(db, "campaigns", campaignId), {
-            currentAmount: increment(amount),
-            dana_terkumpul: increment(amount),
-            updatedAt: serverTimestamp()
-        });
+        // Update jumlah kutipan kempen
+        await updateDoc(
+            doc(db, "campaigns", campaignId),
+            {
+                currentAmount: increment(amount),
+                dana_terkumpul: increment(amount),
+                updatedAt: serverTimestamp()
+            }
+        );
 
-        const receiptRef = await addDoc(collection(db, "receipts"), {
-            donationId: donationRef.id,
-            campaignId,
-            donorId: currentUser.uid,
-            receiptNumber: generateReceiptNumber(),
-            amount,
-            paymentMethod,
-            paymentStatus: "Paid",
-            transactionReference,
-            receiptUrl: "",
-            generatedAt: serverTimestamp()
-        });
+        // Jana resit
+        const receiptRef = await addDoc(
+            collection(db, "receipts"),
+            {
+                donationId: donationRef.id,
+                campaignId,
+                donorId: currentUser.uid,
+                receiptNumber: generateReceiptNumber(),
+                amount,
+                paymentMethod,
+                paymentStatus: "Selesai",
+                transactionReference,
+                receiptUrl: "",
+                generatedAt: serverTimestamp()
+            }
+        );
 
-        window.location.href = `success.html?receiptId=${receiptRef.id}`;
+        // Redirect
+        window.location.href =
+            `success.html?receiptId=${receiptRef.id}`;
 
     } catch (error) {
+
         console.error(error);
-        message.textContent = error.message;
+
+        message.textContent =
+            "Ralat berlaku semasa memproses sumbangan.";
+
         message.style.color = "red";
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Teruskan Pembayaran";
     }
+
 });
