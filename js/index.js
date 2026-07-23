@@ -71,7 +71,7 @@ async function loadFeaturedCampaigns() {
                 </div>
 
                 <a href="donation.html?campaignId=${campaignId}">
-                    <button>Donate Now</button>
+                    <button>Sumbang Sekarang</button>
                 </a>
             </div>
         `;
